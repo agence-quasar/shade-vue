@@ -12,6 +12,8 @@ npm install
 #install vue tap
 npm install vue-gesture
 
+npm install --save vue-touch
+
 
 # serve with hot reload at localhost:8080
 npm run dev
