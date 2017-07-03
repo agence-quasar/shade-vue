@@ -8,6 +8,7 @@
         <a class="icon-arrow-left2 arrow" @click="flowPage"></a>
         <h1>{{user.displayName}}</h1>
         <div class="cardGlobal">
+
           <div class="containerCard"  v-for="elem in myPhoto" v-bind:class="[elem.pushId]" >
             <div class="photo-card"  >
               <div class="image"  :style="{ 'background-image': 'url(' + elem.url + ')' }" >
@@ -33,7 +34,6 @@
         </nav>
       </footer>
     </main>
-
 
 
 
@@ -68,8 +68,8 @@ export default {
   },
 
   methods:{
-            test(){
-              console.log('tap')
+            test(event){
+              console.log(event);
 
             },
             removePhoto(){

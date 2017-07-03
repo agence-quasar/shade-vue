@@ -32,7 +32,7 @@
       let appCompo = this.$parent; // get pp compososant to have user object
       return{
         user :appCompo.user,
-        picturesUrl:[],
+        picturesUrl:[]
 
 
       }
@@ -54,10 +54,6 @@
             updates['photos/' + parent.className + '/' + 'like'] = like;
             firebase.database().ref().update(updates);
 
-            let updates2 = {};
-            updates['users/' + vm.user.uid + '/' + 'like'] = [parent.className];
-            firebase.database().ref().update(updates2);
-            console.log(' add table');
         });
 
      /*   likeRef.orderByChild("url").equalTo(imageUrl).on('value', function(snapshot) {
