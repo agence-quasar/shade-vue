@@ -10,6 +10,9 @@
          Se connecter avec Facebook</a>
        <a @click.prevent="google"class="btn">
          Se connecter avec google</a>
+
+       <a @click.prevent="twitter"class="btn">
+         Se connecter avec twitter</a>
      </div>
 
 
@@ -31,45 +34,56 @@ export default {
         let that = this;
         let vm = that.$parent.$parent;
         let parent = that.$parent;
+        vm.provider.google.setCustomParameters({
+          'display': 'popup'
+        });
+        vm.provider.google.addScope('email');
         firebase.auth().signInWithPopup(vm.provider.google).then(function(result) {
-
+          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
           let token = result.credential.accessToken;
+          // The signed-in user info.
           let user = result.user;
 
-          let checkUser = function () {
-            firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
-              let  data = snapshot.val();
-              if (data == null){
+          // ...
+          firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
+            let  data = snapshot.val();
+            let date = new Date();
+            if (data == null){
+              firebase.database().ref('/users/' + user.uid).set({
+                username: user.displayName,
+                mail : user.email,
+                isPhoto : false,
+                created : JSON.stringify(date),
+                dateList : false
 
-                let createUser = function(userId, name){
 
-                  firebase.database().ref('users/' + userId).set({
-                    username: name,
+              }).then(function () {
+                console.log("new user", name, 'created');
+                console.log('created date ', date);
 
-
-                  }).then(function () {
-                    console.log("new user", name, 'created')
-                    parent.isConnect = true;
-                    parent.profilPage = true;
-                    parent.user = user;
-                  })
-                };
-                createUser(user.uid, user.displayName);
-              }else{
-                console.log("compte déjà en db");
-                console.log(parent.isConnect)
                 parent.isConnect = true;
                 parent.profilPage = true;
                 parent.user = user;
-              }
+              })
+
+            }else{
+              console.log("compte déjà en db");
+              console.log(parent.isConnect);
+              console.log(' add date', date);
+              date = JSON.stringify(date);
+
+              firebase.database().ref('/users/' + user.uid + '/dateList').push({
+                date
+              });
 
 
-            });
-          };
-          checkUser(user.uid);
-          console.log('object google:', user);
-          //createUser(user.uid, user.displayName);
+              parent.isConnect = true;
+              parent.profilPage = true;
+              parent.user = user;
+            }
 
+
+          });
         });
       },
     facebook : function () {
@@ -89,25 +103,87 @@ export default {
         // ...
         firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
           let  data = snapshot.val();
+          let date = new Date();
           if (data == null){
+            firebase.database().ref('/users/' + user.uid).set({
+              username: user.displayName,
+              mail : user.email,
+              isPhoto : false,
+              created : JSON.stringify(date),
+              dateList : false
 
-              firebase.database().ref('/users/' + user.uid).set({
-                username: user.displayName,
-                mail : user.email,
-                isPhoto : false,
 
+            }).then(function () {
+              console.log("new user", name, 'created');
+              console.log('created date ', date);
 
-              }).then(function () {
-                console.log("new user", name, 'created');
-
-                parent.isConnect = true;
-                parent.profilPage = true;
-                parent.user = user;
-              })
+              parent.isConnect = true;
+              parent.profilPage = true;
+              parent.user = user;
+            })
 
           }else{
             console.log("compte déjà en db");
             console.log(parent.isConnect);
+            console.log(' add date', date);
+            date = JSON.stringify(date);
+
+            firebase.database().ref('/users/' + user.uid + '/dateList').push({
+              date
+            });
+
+
+            parent.isConnect = true;
+            parent.profilPage = true;
+            parent.user = user;
+          }
+
+
+        });
+      });
+
+  },
+    twitter : function () {
+      let that = this;
+      let vm = that.$parent.$parent;
+      let parent = that.$parent;
+      firebase.auth().signInWithPopup(vm.provider.twitter).then(function(result) {
+
+        // The signed-in user info.
+        let user = result.user;
+
+        // ...
+        firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
+          let  data = snapshot.val();
+          let date = new Date();
+          if (data == null){
+            firebase.database().ref('/users/' + user.uid).set({
+              username: user.displayName,
+              mail : user.email,
+              isPhoto : false,
+              created : JSON.stringify(date),
+              dateList : false
+
+
+            }).then(function () {
+              console.log("new user", name, 'created');
+              console.log('created date ', date);
+
+              parent.isConnect = true;
+              parent.profilPage = true;
+              parent.user = user;
+            })
+
+          }else{
+            console.log("compte déjà en db");
+            console.log(parent.isConnect);
+            console.log(' add date', date);
+            date = JSON.stringify(date);
+
+            firebase.database().ref('/users/' + user.uid + '/dateList').push({
+              date
+            });
+
 
             parent.isConnect = true;
             parent.profilPage = true;
@@ -118,60 +194,60 @@ export default {
         });
       });
       /*firebase.auth().signInWithRedirect(vm.provider.facebook);
-      firebase.auth().getRedirectResult().then(function(result) {
-        if (result.credential) {
-          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-          let token = result.credential.accessToken;
-          // ...
-        }
-        // The signed-in user info.
-        let user = result.user;
-        console.log(user);
+       firebase.auth().getRedirectResult().then(function(result) {
+       if (result.credential) {
+       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+       let token = result.credential.accessToken;
+       // ...
+       }
+       // The signed-in user info.
+       let user = result.user;
+       console.log(user);
 
 
-      }).then(function(result) {
+       }).then(function(result) {
 
-        let token = result.credential.accessToken;
-        let user = result.user;
-        let checkUser = function () {
-          firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
-            let  data = snapshot.val();
-            if (data == null){
+       let token = result.credential.accessToken;
+       let user = result.user;
+       let checkUser = function () {
+       firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
+       let  data = snapshot.val();
+       if (data == null){
 
-              let createUser = function(userId, name){
+       let createUser = function(userId, name){
 
-                firebase.database().ref('users/' + userId).set({
-                  username: name,
-
-
-                }).then(function () {
-                  console.log("new user", name, 'created');
-
-                  parent.isConnect = true;
-                  parent.profilPage = true;
-                  parent.user = user;
-                })
-              };
-              createUser(user.uid, user.displayName);
-            }else{
-              console.log("compte déjà en db");
-              console.log(parent.isConnect);
-
-              parent.isConnect = true;
-              parent.profilPage = true;
-              parent.user = user;
-            }
+       firebase.database().ref('users/' + userId).set({
+       username: name,
 
 
-          });
-        };
-        checkUser(user.uid);
-        console.log('object google:', user);
-        //createUser(user.uid, user.displayName);
+       }).then(function () {
+       console.log("new user", name, 'created');
 
-      });
-    }*/
-  }
+       parent.isConnect = true;
+       parent.profilPage = true;
+       parent.user = user;
+       })
+       };
+       createUser(user.uid, user.displayName);
+       }else{
+       console.log("compte déjà en db");
+       console.log(parent.isConnect);
+
+       parent.isConnect = true;
+       parent.profilPage = true;
+       parent.user = user;
+       }
+
+
+       });
+       };
+       checkUser(user.uid);
+       console.log('object google:', user);
+       //createUser(user.uid, user.displayName);
+
+       });
+       }*/
+    }
   }
 }
 

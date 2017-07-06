@@ -44,7 +44,8 @@ new Vue({
     this.database = this.firebaseApp.database();
     this.provider = {
       google: new firebase.auth.GoogleAuthProvider(),
-      facebook:new firebase.auth.FacebookAuthProvider()
+      facebook:new firebase.auth.FacebookAuthProvider(),
+      twitter : new firebase.auth.TwitterAuthProvider()
     };
   }
 
