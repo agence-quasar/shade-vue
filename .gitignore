@@ -15,6 +15,10 @@ yarn-error.log*
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
+<<<<<<< HEAD
+=======
+.idea/**
+>>>>>>> 881fcc5a40e29df89475cccee704ef9119cf4562
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -25,6 +29,12 @@ yarn-error.log*
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 
+<<<<<<< HEAD
+=======
+# Public
+public/**
+public
+>>>>>>> 881fcc5a40e29df89475cccee704ef9119cf4562
 # Gradle:
 .idea/**/gradle.xml
 .idea/**/libraries
