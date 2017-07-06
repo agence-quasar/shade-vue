@@ -15,6 +15,7 @@ yarn-error.log*
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
+.idea/**
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -25,6 +26,9 @@ yarn-error.log*
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 
+# Public
+public/**
+public
 # Gradle:
 .idea/**/gradle.xml
 .idea/**/libraries
