@@ -3,6 +3,7 @@
     <page-connect v-if="!isConnect"></page-connect>
     <page-profil v-if="profilPage"></page-profil>
     <page-flow v-if="flowPage"></page-flow>
+    <page-upload v-if="pageUpload"></page-upload>
 
   </div>
 </template>
@@ -11,6 +12,7 @@
 import pageConnect from './components/pageConnect'
 import pageProfil from './components/pageProfil'
 import pageFlow from './components/pageFlow'
+import pageUpload from './components/pageUpload'
 
 
 
@@ -26,6 +28,8 @@ export default {
         user :false, // objet user que renvoie google ou facebook auth
         profilPage:false,
         flowPage:false,
+        pageUpload:false,
+        blob : false
     }
   },
 
@@ -34,7 +38,8 @@ export default {
   components: {
     pageConnect,
     pageProfil,
-    pageFlow
+    pageFlow,
+    pageUpload
 
   }
 }

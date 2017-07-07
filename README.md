@@ -10,7 +10,17 @@ owner : agencequasar@gmail.com
 npm install
 
 #install vue tap
-npm install vue-gesture
+
+npm install vue-touch@next
+
+
+#install vue tabs
+npm install vue-tabs-component --save
+
+
+thanks to :
+https://github.com/spatie/vue-tabs-component
+https://github.com/vuejs/vue-touch
 
 
 # serve with hot reload at localhost:8080

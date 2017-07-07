@@ -43,7 +43,6 @@
       like: function (event) {
         let parent = event.target.parentElement;
         let vm = this;
-        //console.log(parent.className)
         let likeRef = firebase.database().ref('photos/' + parent.className);
         likeRef.once('value').then(function(snapshot) {
 

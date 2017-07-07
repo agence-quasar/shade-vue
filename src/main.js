@@ -2,6 +2,8 @@
 import Vue from 'vue'
 import App from './App'
 
+import Tabs from 'vue-tabs-component';
+
 
 Vue.config.productionTip = false;
 // Register a global custom directive called v-focus
@@ -11,6 +13,7 @@ VueTouch.registerCustomEvent('doubletap', {
   taps: 2
 });
 Vue.use(VueTouch);
+Vue.use(Tabs);
 
 
 
@@ -32,12 +35,12 @@ new Vue({
   mounted: function () {
 
     const firebaseConfig = {
-      apiKey: "AIzaSyCZOGNAh0h4zhmEshF-ExSQtVjJO8z8Loo",
-      authDomain: "shade-dev.firebaseapp.com",
-      databaseURL: "https://shade-dev.firebaseio.com",
-      projectId: "shade-dev",
-      storageBucket: "shade-dev.appspot.com",
-      messagingSenderId: "91667937762"
+      apiKey: "AIzaSyA3UdBrIvHxcTEaGGEFI6obqi17JjT6S9Q",
+      authDomain: "local-dev-amb.firebaseapp.com",
+      databaseURL: "https://local-dev-amb.firebaseio.com",
+      projectId: "local-dev-amb",
+      storageBucket: "local-dev-amb.appspot.com",
+      messagingSenderId: "464414262517"
     };
     this.firebaseApp = firebase.initializeApp(firebaseConfig);
     // Get a reference to the database service

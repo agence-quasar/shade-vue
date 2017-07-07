@@ -58,8 +58,6 @@ export default {
 
 
               }).then(function () {
-                console.log("new user", name, 'created');
-                console.log('created date ', date);
 
                 parent.isConnect = true;
                 parent.profilPage = true;
@@ -67,9 +65,6 @@ export default {
               })
 
             }else{
-              console.log("compte déjà en db");
-              console.log(parent.isConnect);
-              console.log(' add date', date);
               date = JSON.stringify(date);
 
               firebase.database().ref('/users/' + user.uid + '/dateList').push({
@@ -114,8 +109,6 @@ export default {
 
 
             }).then(function () {
-              console.log("new user", name, 'created');
-              console.log('created date ', date);
 
               parent.isConnect = true;
               parent.profilPage = true;
@@ -123,9 +116,6 @@ export default {
             })
 
           }else{
-            console.log("compte déjà en db");
-            console.log(parent.isConnect);
-            console.log(' add date', date);
             date = JSON.stringify(date);
 
             firebase.database().ref('/users/' + user.uid + '/dateList').push({
@@ -166,8 +156,6 @@ export default {
 
 
             }).then(function () {
-              console.log("new user", name, 'created');
-              console.log('created date ', date);
 
               parent.isConnect = true;
               parent.profilPage = true;
@@ -175,9 +163,6 @@ export default {
             })
 
           }else{
-            console.log("compte déjà en db");
-            console.log(parent.isConnect);
-            console.log(' add date', date);
             date = JSON.stringify(date);
 
             firebase.database().ref('/users/' + user.uid + '/dateList').push({

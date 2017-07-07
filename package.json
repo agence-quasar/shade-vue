@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "vue": "^2.3.3",
+    "vue-tabs-component": "^1.1.0",
     "vue-touch": "^1.1.0"
   },
   "devDependencies": {
