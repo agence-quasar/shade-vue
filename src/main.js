@@ -2,6 +2,8 @@
 import Vue from 'vue'
 import App from './App'
 
+import Tabs from 'vue-tabs-component';
+
 
 Vue.config.productionTip = false;
 // Register a global custom directive called v-focus
@@ -11,6 +13,7 @@ VueTouch.registerCustomEvent('doubletap', {
   taps: 2
 });
 Vue.use(VueTouch);
+Vue.use(Tabs);
 
 
 

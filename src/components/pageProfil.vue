@@ -7,8 +7,10 @@
       <div class="container">
         <a class="icon-arrow-left2 arrow" @click="flowPage"></a>
         <h1>{{user.displayName}}</h1>
-        <div class="cardGlobal">
 
+        <button @click="test"></button>
+
+        <div class="cardGlobal">
           <div class="containerCard"  v-for="elem in myPhoto" v-bind:class="[elem.pushId]" >
             <div class="photo-card"  >
               <div class="image"  :style="{ 'background-image': 'url(' + elem.url + ')' }" >
@@ -16,11 +18,13 @@
               <div class="heading">
                 <h2 class="title">like : {{elem.like}}</h2>
                 <a class="icon-x close" v-bind:class="[elem.pushId]" @click="removePhoto($event)"></a>
-
               </div>
             </div>
           </div>
         </div>
+
+
+
       </div>
       <footer>
         <nav>
@@ -69,15 +73,13 @@ export default {
 
   methods:{
             test(event){
-              console.log(event);
-
+              this.$parent.pageUpload = true;
+              this.$parent.profilPage = false;
             },
             removePhoto(){
-                console.log(event.currentTarget);
                 let container = event.currentTarget.parentElement.parentElement;
                 let str = event.currentTarget.getAttribute("class");
                 let res = str.split(" ");
-                //console.log(res)
                 firebase.database().ref('photos/' + res[2] ).remove()
 
 
@@ -88,159 +90,47 @@ export default {
             },
 
             onFileChange(e) {
+              let vm = this;
               let files = e.target.files || e.dataTransfer.files; // chope l'image
               if (!files.length)
                 return;
-              this.createImage(files[0]);
-            },
-            createImage(file) {
-              let image = new Image();
-              let reader = new FileReader();
-              let vm = this;
-              console.log(file);
+
+              for (let imgFile of e.target.files) {
+                let img = new Image;
+                img.src = URL.createObjectURL(imgFile);
+                vm.$parent.blob = img;
 
 
+              }
+              this.$parent.pageUpload = true;
+              this.$parent.profilPage = false;
+              //this.createImage(files[0]);
 
-              reader.onload = (e) => {
-                vm.imageUrl = e.target.result;
-
-
-              };
-              //reader.readAsDataURL(file); // assigne l'url de l'image a data.imageUrl
-              vm.image =file;  //assigne l'objet image a data.image
-
-              //console.log(file); //
-              this.uploadImage();
-            },
-            removeImage: function (e) {
-              this.image = '';
-            },
-            uploadImage(){
-              let vm = this;
-              let image = vm.image;
-              let file = image; // use the Blob or File API
-              console.log(file.lastModified);
-
-              let ref = firebase.storage().ref(JSON.stringify(file.lastModified));
-              // push dans ce dossier un enfant qui a le nom " image.name "
-
-              ref.put(file).then(function(snapshot) {
-                console.log('Uploaded a blob or file!');
-              }).then(function () {
-
-                let ref = firebase.storage().ref(JSON.stringify(file.lastModified));
-                let storeUrl;
-
-                let getUrl = function () {
-
-
-                  ref.getDownloadURL().then(function(url) {
-                    let xhr = new XMLHttpRequest();
-                    xhr.responseType = 'blob';
-                    xhr.onload = function(event) {
-                      let blob = xhr.response;
-                    };
-                    xhr.open('GET', url);
-                    xhr.send();
-                    storeUrl = url;
-
-                    postUrl(storeUrl);
-
-
-                  }).catch(function(error) {
-                    console.log(error)
-                  });
-
-
-
-
-                };
-                getUrl();
-                // post l'url de l'image dans un tableau photos dans la table user.uid
-                let postUrl = function () {
-                  /*let photoId = 1;
-                  firebase.database().ref('photos/').once('value').then(function (snapshot) {
-                    if (snapshot.val()) {
-
-                      let data = snapshot.val();
-                      data = data.length;
-                      photoId = data++;
-                      return photoId
-                    }
-
-                  }).then(function () {*/
-                    let plop = {a: "plop", b: "plop2", c: "plop3"}; // valeur test pour db
-                    let category = {a: "random"}; // valeur test pour la db
-
-
-                    let newRef = firebase.database().ref('photos/' ).push({
-
-                      url: storeUrl,
-                      wtacherId: plop,
-                      category: category,
-                      userId: vm.user.uid,
-                      like: 0,
-                      pushId : 0
-
-
-                    });
-                  let pushId = newRef.key;
-                  let niquePush ={};
-                  niquePush['photos/'+ pushId + '/pushId'] = pushId;
-                  firebase.database().ref().update(niquePush);
-
-
-
-                  let updates = {};
-                    updates['users/' + vm.user.uid + '/isPhoto'] = true;
-                    firebase.database().ref().update(updates);
-
-                    vm.removeImage();
-                    vm.isPhoto = true;
-                    console.log(vm.msg);
-                    vm.msg.a = "Photo bien recu";
-                    vm.msg.b = "Poster d'autre photos"
-
-
-                  //});
-                }
-
-              });
-      }
+            }
     },
   created:function () {
     let vm = this;
-    firebase.database().ref('users/' + vm.user.uid).on('value', function (snapshot) {
 
-      vm.isPhoto = true;
-      let ref = firebase.database().ref("photos/");
-      ref.orderByChild("userId").equalTo(vm.user.uid).on('value', function(snapshot) {
-
-        let data = snapshot.val();
-        let myPhoto = [];
-
-        if(data){
-          let dataB = Object.keys(data).map(function(e) {
-            return [Number(e), data[e]];
-          });
-          dataB.map( function(obj){
-              myPhoto.push(obj[1]);
-
-          });
-
-          vm.myPhoto = myPhoto;
-          console.log(vm.myPhoto)
+    let that = this;
+    let photoRef = firebase.database().ref('photos/');
+    photoRef.orderByChild("userId").equalTo(vm.user.uid).on('value', function(snapshot) {
 
 
-        }
+      let data = snapshot.val();
+
+      let coucou = [];
+
+      if(data){
+        let dataB = Object.keys(data).map(function(e) {
+          return [Number(e), data[e]];
+        });
+        dataB.map( function(obj){  coucou.push(obj[1]) });
+        that.myPhoto = coucou;
+      }
 
 
-
-      });
 
     });
-
-
 
 
   }
