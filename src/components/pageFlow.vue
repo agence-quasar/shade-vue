@@ -50,12 +50,107 @@
       like: function (event) {
         let parent = event.target.parentElement;
         let vm = this;
+        let userTab = vm.userTab;
         let likeRef = firebase.database().ref('photos/' + parent.className);
+        let owner = false;
+        let photo = false;
+        let like=false;
         likeRef.once('value').then(function(snapshot) {
-
             let data = snapshot.val();
             console.log(data);
-        });
+
+
+            photo = data.pushId;
+            like = data.like;
+            owner = data.userId;
+            let obj = userTab.likeList;
+            if(userTab.likeList){
+
+
+              console.log('1) peut étre un like');
+
+
+              let photoRef = firebase.database().ref('users/' + vm.user.uid +'/likeList' );
+              photoRef.orderByKey().equalTo(owner).once('value').then(function(snapshot) {
+
+                  let userID = snapshot.val();
+
+                  if(userID === null){
+                    console.log('finalement aucun like donc je like');
+
+                    like ++;
+                    let updates = {};
+                    updates['photos/'+photo+'/like'] = like;
+                    firebase.database().ref().update(updates);
+
+                    let ref = firebase.database().ref('users/' + vm.user.uid + '/likeList/' +  owner);
+                    ref.push({
+                      id : photo
+                    })
+                  }
+                  else {
+                    console.log('plop',userID);
+                    let ref1 = Object.keys(userID)[0];
+
+                    let photoRef = firebase.database().ref('users/' + vm.user.uid + '/likeList/' + Object.keys(userID)[0]);
+                    photoRef.orderByChild('id').equalTo(photo).once('value').then(function (snapshot) {
+
+                      let data = snapshot.val();
+                      let ref2 = Object.keys(data)[0];
+                      let pouet = data[Object.keys(data)[0]];
+                      console.log('ref2', ref2);
+                      let nqtm = pouet.id;
+                      console.log('nqtm', nqtm);
+                      if (photo === nqtm) {
+                        console.log('tu as déjo liké cette photo');
+                        like--;
+                        let updates = {};
+                        updates['photos/' + photo + '/like'] = like;
+                        firebase.database().ref().update(updates);
+
+
+                        let delet = {};
+                        delet['users/' + vm.user.uid + '/likeList/' + ref1 + '/' + ref2 + '/id'] = null;
+                        firebase.database().ref().update(delet);
+
+
+                      }
+
+
+                    });
+                  }
+
+
+
+              });
+
+
+
+            }
+            else{
+              console.log('aucun like cest sur donc like++' );
+
+              like ++;
+              let updates = {};
+              updates['photos/'+photo+'/like'] = like;
+              firebase.database().ref().update(updates);
+
+              let ref = firebase.database().ref('users/' + vm.user.uid + '/likeList/' +  owner);
+              ref.push({
+                id : photo
+              })
+
+
+
+
+            }
+
+
+
+
+
+        })
+
 
 
 
