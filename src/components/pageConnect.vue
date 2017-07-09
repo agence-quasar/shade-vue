@@ -54,7 +54,10 @@ export default {
                 mail : user.email,
                 isPhoto : false,
                 created : JSON.stringify(date),
-                dateList : false
+                dateList : false,
+                categoryActive : false,
+                likeList : false
+
 
 
               }).then(function () {
@@ -62,6 +65,15 @@ export default {
                 parent.isConnect = true;
                 parent.profilPage = true;
                 parent.user = user;
+                parent.userTab = {
+                  username: user.displayName,
+                  mail : user.email,
+                  isPhoto : false,
+                  created : JSON.stringify(date),
+                  dateList : false,
+                  categoryActive : false,
+                  likeList : false
+                }
               })
 
             }else{
@@ -75,6 +87,7 @@ export default {
               parent.isConnect = true;
               parent.profilPage = true;
               parent.user = user;
+              parent.userTab = data;
             }
 
 
@@ -105,7 +118,10 @@ export default {
               mail : user.email,
               isPhoto : false,
               created : JSON.stringify(date),
-              dateList : false
+              dateList : false,
+              categoryActive : false,
+              likeList : false
+
 
 
             }).then(function () {
@@ -113,6 +129,16 @@ export default {
               parent.isConnect = true;
               parent.profilPage = true;
               parent.user = user;
+              parent.userTab = {
+                username: user.displayName,
+                mail : user.email,
+                isPhoto : false,
+                created : JSON.stringify(date),
+                dateList : false,
+                categoryActive : false,
+                likeList : false
+
+              }
             })
 
           }else{
@@ -126,6 +152,7 @@ export default {
             parent.isConnect = true;
             parent.profilPage = true;
             parent.user = user;
+            parent.userTab = data;
           }
 
 
@@ -152,7 +179,9 @@ export default {
               mail : user.email,
               isPhoto : false,
               created : JSON.stringify(date),
-              dateList : false
+              dateList : false,
+              categoryActive : false,
+              likeList : false
 
 
             }).then(function () {
@@ -160,6 +189,15 @@ export default {
               parent.isConnect = true;
               parent.profilPage = true;
               parent.user = user;
+              parent.userTab = {
+                username: user.displayName,
+                mail : user.email,
+                isPhoto : false,
+                created : JSON.stringify(date),
+                dateList : false,
+                categoryActive : false,
+                likeList : false
+              }
             })
 
           }else{
@@ -173,65 +211,12 @@ export default {
             parent.isConnect = true;
             parent.profilPage = true;
             parent.user = user;
+            parent.userTab = data;
           }
 
 
         });
       });
-      /*firebase.auth().signInWithRedirect(vm.provider.facebook);
-       firebase.auth().getRedirectResult().then(function(result) {
-       if (result.credential) {
-       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-       let token = result.credential.accessToken;
-       // ...
-       }
-       // The signed-in user info.
-       let user = result.user;
-       console.log(user);
-
-
-       }).then(function(result) {
-
-       let token = result.credential.accessToken;
-       let user = result.user;
-       let checkUser = function () {
-       firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
-       let  data = snapshot.val();
-       if (data == null){
-
-       let createUser = function(userId, name){
-
-       firebase.database().ref('users/' + userId).set({
-       username: name,
-
-
-       }).then(function () {
-       console.log("new user", name, 'created');
-
-       parent.isConnect = true;
-       parent.profilPage = true;
-       parent.user = user;
-       })
-       };
-       createUser(user.uid, user.displayName);
-       }else{
-       console.log("compte déjà en db");
-       console.log(parent.isConnect);
-
-       parent.isConnect = true;
-       parent.profilPage = true;
-       parent.user = user;
-       }
-
-
-       });
-       };
-       checkUser(user.uid);
-       console.log('object google:', user);
-       //createUser(user.uid, user.displayName);
-
-       });
-       }*/
     }
   }
 }

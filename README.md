@@ -1,5 +1,8 @@
 # shade app
 owner : agencequasar@gmail.com
+owner : shadeapp.io
+testPage : https://shade-dev.firebaseapp.com/
+devs : github/bibish
 
 > A Vue.js project
 
@@ -18,10 +21,11 @@ npm install vue-touch@next
 npm install vue-tabs-component --save
 
 
+
+
 thanks to :
 https://github.com/spatie/vue-tabs-component
 https://github.com/vuejs/vue-touch
-
 
 # serve with hot reload at localhost:8080
 npm run dev

@@ -4,6 +4,7 @@
     <page-profil v-if="profilPage"></page-profil>
     <page-flow v-if="flowPage"></page-flow>
     <page-upload v-if="pageUpload"></page-upload>
+    <page-filtre v-if="pageFiltre"></page-filtre>
 
   </div>
 </template>
@@ -13,6 +14,7 @@ import pageConnect from './components/pageConnect'
 import pageProfil from './components/pageProfil'
 import pageFlow from './components/pageFlow'
 import pageUpload from './components/pageUpload'
+import pageFiltre from './components/pageFiltre'
 
 
 
@@ -28,10 +30,15 @@ export default {
         user :false, // objet user que renvoie google ou facebook auth
         profilPage:false,
         flowPage:false,
+        pageFiltre:false,
         pageUpload:false,
-        blob : false
+        blob : false,
+        userTab : false,
+      // add each list in pagefiltre
+        categoryList : ['bras','main','poitrine','pied','pouet','pop']
     }
   },
+
 
 
   // liste des composants
@@ -39,7 +46,8 @@ export default {
     pageConnect,
     pageProfil,
     pageFlow,
-    pageUpload
+    pageUpload,
+    pageFiltre
 
   }
 }

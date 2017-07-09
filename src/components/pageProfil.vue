@@ -92,6 +92,7 @@ export default {
             onFileChange(e) {
               let vm = this;
               let files = e.target.files || e.dataTransfer.files; // chope l'image
+              console.log(files);
               if (!files.length)
                 return;
 
@@ -99,6 +100,7 @@ export default {
                 let img = new Image;
                 img.src = URL.createObjectURL(imgFile);
                 vm.$parent.blob = img;
+                console.log(img);
 
 
               }

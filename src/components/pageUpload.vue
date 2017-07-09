@@ -74,12 +74,11 @@ export default {
           this.$parent.pageUpload = false;
     },
     catF : function (event) {
-
+        let vm = this;
         let target = event.target;
         let category = target.id;
         let catImg = document.getElementsByClassName('catImg');
         for(let i=0; i < catImg.length;i++){
-
             catImg[i].style.border = "none";
         }
         target.style.border = "3px solid red";
@@ -173,11 +172,13 @@ export default {
 
 
   },
-  created:function () {
+  mounted:function () {
 
 
     let vm = this;
     let img = vm.blob;
+
+
     img.onload = function () {
 
       let imgWidth = img.width;

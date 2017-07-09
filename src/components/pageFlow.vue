@@ -1,6 +1,7 @@
 <template>
 
   <main>
+    <button @click="goFiltre">page filtre</button>
     <ul>
       <li v-for="elem in picturesUrl">
         <v-touch tag="div"
@@ -10,6 +11,9 @@
           <div class="image" :style="{ 'background-image': 'url(' + elem.url + ')' }" ></div>
         </v-touch>
       </li>
+      <div >
+      </div>
+
     </ul>
 
     <footer-menu></footer-menu>
@@ -24,14 +28,16 @@
 
 
   import footerMenu from './menu'
+  let count = 0;
   export default {
     name: 'pageFlow',
-    components:{footerMenu},
+
 
     data : function () {
       let appCompo = this.$parent; // get pp compososant to have user object
       return{
         user :appCompo.user,
+        userTab : false,
         picturesUrl:[]
 
 
@@ -40,6 +46,7 @@
     },
 
     methods: {
+
       like: function (event) {
         let parent = event.target.parentElement;
         let vm = this;
@@ -47,60 +54,84 @@
         likeRef.once('value').then(function(snapshot) {
 
             let data = snapshot.val();
-            let like = data.like;
-            like++;
-            let updates = {};
-            updates['photos/' + parent.className + '/' + 'like'] = like;
-            firebase.database().ref().update(updates);
-
+            console.log(data);
         });
 
-     /*   likeRef.orderByChild("url").equalTo(imageUrl).on('value', function(snapshot) {
-          console.log(snapshot.key); // -KJ....
-          let data = snapshot.val();
-          console.log(data);
-
-            console.log('sensé etre un object',data);
-            let id = Object.keys(data);
-            console.log('id',id[0])
-            let dataB = Object.keys(data).map(function(e) {
-              return [Number(e), data[e]];
-            });
-            console.log('est devenu un array', dataB);
-            let count = dataB.map( function(obj){  return obj[1].like });
-            count++;
-            console.log('count',count);
-            let updates = {};
-            updates['photos/' + id[0] + '/' + 'like'] = count;
-            firebase.database().ref().update(updates);
-        });*/
 
 
-
+      },
+      goFiltre : function () {
+        this.$parent.flowPage = false;
+        this.$parent.pageFiltre = true;
       }
     },
 
+    components:{footerMenu},
+
     created : function () {
-      let that = this;
-      let photoRef = firebase.database().ref('photos/');
-      photoRef.on('value', function(snapshot) {
+      let vm = this;
 
-
+      let ref = firebase.database().ref('users/' + vm.user.uid );
+      ref.on('value', function(snapshot) {
         let data = snapshot.val();
-        let coucou = [];
+        vm.userTab = data;
+      });
+      vm.$parent.userTab = vm.userTab;
+      let categoryActive = vm.userTab.categoryActive;
 
-        if(data){
-          let dataB = Object.keys(data).map(function(e) {
-            return [Number(e), data[e]];
+      if (!categoryActive) {
+          console.log('category active = ', vm.userTab.categoryActive);
+
+        let photoRef = firebase.database().ref('photos/');
+        photoRef.on('value', function (snapshot) {
+
+
+          let data = snapshot.val();
+          let coucou = [];
+
+          if (data) {
+            let dataB = Object.keys(data).map(function (e) {
+              return [Number(e), data[e]];
+            });
+            dataB.map(function (obj) {
+              coucou.push(obj[1])
+            });
+            vm.picturesUrl = coucou;
+          }
+
+
+        });
+      }else{
+        // cree un tableau avec tout les categories dans l'objet categoryActive
+        let listActive = Object.values(categoryActive);
+
+        for (let i=0;i<listActive.length;i++){
+          // boucle mes categorie ou aller chercher les photo equalto chaque categories actives
+          let photoRef = firebase.database().ref('photos/');
+          photoRef.orderByChild("category").equalTo(listActive[i]).on('value', function(snapshot) {
+
+            let data = snapshot.val();
+            let coucou = [];
+
+            if (data) {
+              let dataB = Object.keys(data).map(function (e) {
+                return [Number(e), data[e]];
+              });
+              dataB.map(function (obj) {
+                vm.picturesUrl.push(obj[1])
+              });
+              console.log(vm.picturesUrl);
+            }
+
           });
-          dataB.map( function(obj){  coucou.push(obj[1]) });
-          that.picturesUrl = coucou;
         }
 
 
+      }
 
-      });
-    }
+
+      }
+
   }
 
 
