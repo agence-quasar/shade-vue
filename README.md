@@ -20,12 +20,17 @@ npm install vue-touch@next
 #install vue tabs
 npm install vue-tabs-component --save
 
+#install toast
+npm install vue2-toast -S
+
+
 
 
 
 thanks to :
 https://github.com/spatie/vue-tabs-component
 https://github.com/vuejs/vue-touch
+https://github.com/lin-xin/vue-toast
 
 # serve with hot reload at localhost:8080
 npm run dev

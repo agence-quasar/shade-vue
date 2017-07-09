@@ -4,6 +4,9 @@
   <form>
     <nav>
       <ul>
+        <li>
+          <a class="btn" @click.prevent='goToFiltre'>filtres</a>
+        </li>
         <li id="profil">
           <figure @click.prevent="goToProfil" class="icon-user"></figure>
         </li>
@@ -41,7 +44,14 @@ export default {
         appComp.profilPage = false;
         appComp.flowPage = true;
 
-      }
+      },
+    goToFiltre:function () {
+      let appComp = this.$parent.$parent ;
+      appComp.pageFiltre = true;
+      appComp.flowPage = false;
+
+    }
+
   }
 
 }
@@ -104,6 +114,22 @@ figure{
   color: white;
 }
 
+  .btn {
+    background: -moz-linear-gradient(left, #e26a84 0%, #e5244e 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left,#e26a84 0%,#e5244e 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right,#e26a84 0%,#e5244e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#e5244e',GradientType=1 ); /* IE6-9 */
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 13px 20px 13px 20px;
+    text-decoration: none;
+    margin: -18px;
+    display:inline-block;
+  }
 
 
 

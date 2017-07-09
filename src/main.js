@@ -1,8 +1,9 @@
 
 import Vue from 'vue'
 import App from './App'
-
 import Tabs from 'vue-tabs-component';
+import 'vue2-toast/lib/toast.css';
+import Toast from 'vue2-toast';
 
 
 
@@ -15,6 +16,8 @@ VueTouch.registerCustomEvent('doubletap', {
 });
 Vue.use(VueTouch);
 Vue.use(Tabs);
+Vue.use(Toast, 700 );
+
 
 
 

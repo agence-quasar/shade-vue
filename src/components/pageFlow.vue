@@ -1,7 +1,6 @@
 <template>
 
   <main>
-    <button @click="goFiltre">page filtre</button>
     <ul>
       <li v-for="elem in picturesUrl">
         <v-touch tag="div"
@@ -46,6 +45,12 @@
     },
 
     methods: {
+        toast: function () {
+          this.$toast.top('like');  // or this.$toast.bottom('bottom');
+        },
+      untoast: function () {
+        this.$toast.top('unlike');  // or this.$toast.bottom('bottom');
+      },
 
       like: function (event) {
         let parent = event.target.parentElement;
@@ -87,6 +92,7 @@
                     ref.push({
                       id : photo
                     })
+                    vm.toast();
                   }
                   else {
                     console.log('plop',userID);
@@ -112,6 +118,7 @@
                         let delet = {};
                         delet['users/' + vm.user.uid + '/likeList/' + ref1 + '/' + ref2 + '/id'] = null;
                         firebase.database().ref().update(delet);
+                        vm.untoast();
 
 
                       }
@@ -139,6 +146,7 @@
               ref.push({
                 id : photo
               })
+              vm.toast()
 
 
 
@@ -215,7 +223,6 @@
               dataB.map(function (obj) {
                 vm.picturesUrl.push(obj[1])
               });
-              console.log(vm.picturesUrl);
             }
 
           });

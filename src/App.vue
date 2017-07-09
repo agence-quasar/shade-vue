@@ -35,7 +35,7 @@ export default {
         blob : false,
         userTab : false,
       // add each list in pagefiltre
-        categoryList : ['bras','main','poitrine','pied','pouet','pop']
+        categoryList : ['bras','main','poitrine']
     }
   },
 
