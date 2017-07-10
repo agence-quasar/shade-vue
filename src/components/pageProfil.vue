@@ -91,19 +91,20 @@ export default {
 
             onFileChange(e) {
               let vm = this;
-              let files = e.target.files || e.dataTransfer.files; // chope l'image
-              console.log(files);
+              console.log('event ',e);
+              let files = e.target.files ;//|| e.dataTransfer.files; // chope l'image
+              console.log(files[0]);
               if (!files.length)
                 return;
 
-              for (let imgFile of e.target.files) {
+              //for (let imgFile of e.target.files) {
                 let img = new Image;
-                img.src = URL.createObjectURL(imgFile);
+                img.src = URL.createObjectURL(files[0]);
                 vm.$parent.blob = img;
                 console.log(img);
 
 
-              }
+              //}
               this.$parent.pageUpload = true;
               this.$parent.profilPage = false;
               //this.createImage(files[0]);

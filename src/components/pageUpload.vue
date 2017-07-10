@@ -98,7 +98,82 @@ export default {
 
         let blob = vm.blob;
         let canvas = vm.canvas;
-        canvas.toBlob(function (blob) {
+
+        if (canvas.toBlob) {
+          canvas.toBlob(
+            function (blob) {
+              let date = new Date();
+
+
+              let ref = firebase.storage().ref(JSON.stringify(date));
+              ref.put(blob).then(function (snapshot) {
+                vm.$parent.profilPage = true;
+                vm.$parent.pageUpload = false;
+              }).then(function () {
+
+                let ref = firebase.storage().ref(JSON.stringify(date));
+                let storeUrl;
+
+                let getUrl = function () {
+
+
+                  ref.getDownloadURL().then(function (url) {
+                    let xhr = new XMLHttpRequest();
+                    xhr.responseType = 'blob';
+                    xhr.onload = function (event) {
+                      let blob = xhr.response;
+                    };
+                    xhr.open('GET', url);
+                    xhr.send();
+                    storeUrl = url;
+
+                    postUrl(storeUrl);
+
+
+                  }).catch(function (error) {
+                    console.log(error)
+                  });
+
+
+                };
+                getUrl();
+                // post l'url de l'image dans un tableau photos dans la table user.uid
+                let postUrl = function () {
+                  let cat = vm.cat;
+                  let newRef = firebase.database().ref('photos/').push({
+
+                    url: storeUrl,
+                    category: cat,
+                    userId: vm.user.uid,
+                    like: 0,
+                    pushId: 0
+
+
+                  });
+                  let pushId = newRef.key;
+                  let niquePush = {};
+                  niquePush['photos/' + pushId + '/pushId'] = pushId;
+                  firebase.database().ref().update(niquePush);
+
+
+                  let updates = {};
+                  updates['users/' + vm.user.uid + '/isPhoto'] = true;
+                  firebase.database().ref().update(updates);
+
+
+                  vm.isPhoto = true;
+
+                }
+
+              });
+            },
+            'image/jpeg'
+          );
+        }
+
+
+
+       /* canvas.toBlob(function (blob) {
           let date = new Date();
 
 
@@ -165,7 +240,7 @@ export default {
           });
 
 
-        }, 'image/jpeg', 0.6)
+        }, 'image/jpeg', 0.6)*/
       }else{
       }
     }
@@ -214,7 +289,10 @@ export default {
 
 
 
-    }
+    };
+    !function(t){"use strict";var e=t.HTMLCanvasElement&&t.HTMLCanvasElement.prototype,o=t.Blob&&function(){try{return Boolean(new Blob)}catch(t){return!1}}(),n=o&&t.Uint8Array&&function(){try{return 100===new Blob([new Uint8Array(100)]).size}catch(t){return!1}}(),r=t.BlobBuilder||t.WebKitBlobBuilder||t.MozBlobBuilder||t.MSBlobBuilder,a=/^data:((.*?)(;charset=.*?)?)(;base64)?,/,i=(o||r)&&t.atob&&t.ArrayBuffer&&t.Uint8Array&&function(t){var e,i,l,u,b,c,d,B,f;if(e=t.match(a),!e)throw new Error("invalid data URI");for(i=e[2]?e[1]:"text/plain"+(e[3]||";charset=US-ASCII"),l=!!e[4],u=t.slice(e[0].length),b=l?atob(u):decodeURIComponent(u),c=new ArrayBuffer(b.length),d=new Uint8Array(c),B=0;B<b.length;B+=1)d[B]=b.charCodeAt(B);return o?new Blob([n?d:c],{type:i}):(f=new r,f.append(c),f.getBlob(i))};t.HTMLCanvasElement&&!e.toBlob&&(e.mozGetAsFile?e.toBlob=function(t,o,n){t(n&&e.toDataURL&&i?i(this.toDataURL(o,n)):this.mozGetAsFile("blob",o))}:e.toDataURL&&i&&(e.toBlob=function(t,e,o){t(i(this.toDataURL(e,o)))})),"function"==typeof define&&define.amd?define(function(){return i}):"object"==typeof module&&module.exports?module.exports=i:t.dataURLtoBlob=i}(window);
+    //# sourceMappingURL=canvas-to-blob.min.js.map
+
   }
 
 }
