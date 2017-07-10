@@ -9,7 +9,7 @@
         <section id="canvas_wrapper"></section>
         <div>
           <tabs>
-            <tab name="First tab">
+            <tab name="First tab" @click="test($event)">
 
               <div class="icon_container">
                 <figure >
@@ -68,6 +68,9 @@ export default {
   },
 
   methods:{
+      test : function (event) {
+        console.log(event.target);
+      },
     pageProfil : function () {
 
           this.$parent.profilPage = true;
@@ -221,10 +224,10 @@ export default {
 
 <style scoped>
 
+
 .icon_container{
   width: 100%;
   height: 100px;
-  border:1px solid black;
   display: inline-table;
   overflow: scroll;
 }

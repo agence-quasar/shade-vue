@@ -1,0 +1,12 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    "photos": {
+      ".indexOn": ["userId", "url", "pushId", "category"]
+    },
+    "users": {
+      ".indexOn": ["id", "userID"]
+    }
+  }
+}

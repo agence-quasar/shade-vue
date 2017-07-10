@@ -74,13 +74,14 @@
 
               console.log('1) peut étre un like');
 
-
+              // fetch user/id/likeList
               let photoRef = firebase.database().ref('users/' + vm.user.uid +'/likeList' );
               photoRef.orderByKey().equalTo(owner).once('value').then(function(snapshot) {
 
                   let userID = snapshot.val();
-
+                  // si l'utilisateur de le photo existe chez l'utilisateur qui like
                   if(userID === null){
+                      // l'utilisateur en question n'existe pas dans liekList donc je l'ajoute et je like
                     console.log('finalement aucun like donc je like');
 
                     like ++;
@@ -95,6 +96,7 @@
                     vm.toast();
                   }
                   else {
+                    // l'uilisateur existe donc on va chercher dans ce tableau si il y a une photo
                     console.log('plop',userID);
                     let ref1 = Object.keys(userID)[0];
 
@@ -102,26 +104,43 @@
                     photoRef.orderByChild('id').equalTo(photo).once('value').then(function (snapshot) {
 
                       let data = snapshot.val();
-                      let ref2 = Object.keys(data)[0];
-                      let pouet = data[Object.keys(data)[0]];
-                      console.log('ref2', ref2);
-                      let nqtm = pouet.id;
-                      console.log('nqtm', nqtm);
-                      if (photo === nqtm) {
-                        console.log('tu as déjo liké cette photo');
-                        like--;
+                      //console.log('before ref',data);
+                      if(data === null){
+                          console.log('likelist + userid  mais nouvelle photo');
+                        like ++;
                         let updates = {};
-                        updates['photos/' + photo + '/like'] = like;
+                        updates['photos/'+photo+'/like'] = like;
                         firebase.database().ref().update(updates);
 
-
-                        let delet = {};
-                        delet['users/' + vm.user.uid + '/likeList/' + ref1 + '/' + ref2 + '/id'] = null;
-                        firebase.database().ref().update(delet);
-                        vm.untoast();
-
-
+                        let ref = firebase.database().ref('users/' + vm.user.uid + '/likeList/' +  owner);
+                        ref.push({
+                          id : photo
+                        })
+                        vm.toast();
                       }
+                      else{
+                        let ref2 = Object.keys(data)[0];
+                        let pouet = data[Object.keys(data)[0]];
+                        console.log('ref2', ref2);
+                        let nqtm = pouet.id;
+                        console.log('nqtm', nqtm);
+                        if (photo === nqtm) {
+                          console.log('tu as déjo liké cette photo');
+                          like--;
+                          let updates = {};
+                          updates['photos/' + photo + '/like'] = like;
+                          firebase.database().ref().update(updates);
+
+
+                          let delet = {};
+                          delet['users/' + vm.user.uid + '/likeList/' + ref1 + '/' + ref2 + '/id'] = null;
+                          firebase.database().ref().update(delet);
+                          vm.untoast();
+
+
+                        }
+                      }
+
 
 
                     });
@@ -134,6 +153,7 @@
 
 
             }
+            // pas de likeList je like auto ( likelist = false)
             else{
               console.log('aucun like cest sur donc like++' );
 
@@ -190,8 +210,7 @@
 
 
           let data = snapshot.val();
-          let coucou = [];
-
+          let coucou=[];
           if (data) {
             let dataB = Object.keys(data).map(function (e) {
               return [Number(e), data[e]];
@@ -199,7 +218,8 @@
             dataB.map(function (obj) {
               coucou.push(obj[1])
             });
-            vm.picturesUrl = coucou;
+
+            vm.picturesUrl = coucou
           }
 
 
@@ -215,14 +235,15 @@
 
             let data = snapshot.val();
             let coucou = [];
-
             if (data) {
               let dataB = Object.keys(data).map(function (e) {
                 return [Number(e), data[e]];
               });
               dataB.map(function (obj) {
-                vm.picturesUrl.push(obj[1])
+                coucou.push(obj[1])
               });
+
+              vm.picturesUrl = coucou;
             }
 
           });

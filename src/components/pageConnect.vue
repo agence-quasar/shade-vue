@@ -228,7 +228,7 @@ export default {
 <style scoped>
   .container{
     position: fixed;
-    bottom: 25vh;
+    bottom: 5vh;
     left: 0;
     right: 0;
     margin: auto;
