@@ -102,9 +102,7 @@ export default {
 
 
               let ref = firebase.storage().ref(JSON.stringify(date));
-              ref.put(blob).then(function (snapshot) {
-
-              }).then(function () {
+              ref.put(blob).then(function (){}).then(function () {
 
                 let ref = firebase.storage().ref(JSON.stringify(date));
                 let storeUrl;
@@ -179,26 +177,19 @@ export default {
 
 
 
+
+
     let vm = this;
     let img = vm.blob;
 
 
 
-
-    img.onload = function () {
+  img.onload = function () {
 
       let imgWidth = img.width;
       let imgHeight = img.height;
-      let maxInternalSize = 800;
-      let maxDisplaySize = 300;
-      //let scaleRatio = maxDisplaySize / maxInternalSize;
 
       let wrapper = document.getElementById('canvas_wrapper');
-      /*
-       while (wrapper.hasChildNodes()) {
-       wrapper.removeChild(wrapper.lastChild);
-       }
-       */
       let canvas = document.createElement('canvas');
 
       canvas.setAttribute("width", imgWidth);
@@ -209,7 +200,6 @@ export default {
       let ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, imgWidth, imgHeight);
 
-      // fix for canvas internal size calc (attr) and display (style)
       canvas.style.width = 95 + "%";
       canvas.style.height = 450 + "px";
       canvas.style.marginTop = -15 + "px";
@@ -279,8 +269,7 @@ main{
   -webkit-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
   -moz-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
   box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
-  overflow: auto;
-
+  overflow: inherit;
   text-align: center;
   min-height: 80vh;
   display:inline-block;

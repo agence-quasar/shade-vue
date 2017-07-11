@@ -101,7 +101,7 @@
                 edit.classList.toggle("icon-edit")
             },
             removePhoto(event){
-                console.log(event.target.parentElement);
+                //console.log(event.target.parentElement);
                 let container = event.target.parentElement;
                 let str = container.getAttribute("class");
                 let res = str.split(" ");
@@ -230,8 +230,7 @@ h1{
   -webkit-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
   -moz-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
   box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
-  overflow: auto;
-
+  overflow: inherit;
   text-align: center;
   min-height: 80vh;
 display:inline-block;

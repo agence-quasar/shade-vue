@@ -297,17 +297,18 @@
               });
 
                 vm.stateUrl.push(coucou);
-                let newstate = Object.keys(vm.stateUrl).reduce(function(res, v) {
-                  return res.concat(vm.stateUrl[v]);
-                }, []);
-                vm.picturesUrl = newstate;
 
-                console.log(coucou);
 
 
             }
 
           });
+          let newstate = Object.keys(vm.stateUrl).reduce(function(res, v) {
+            return res.concat(vm.stateUrl[v]);
+          }, []);
+          vm.picturesUrl = newstate;
+
+          //console.log(coucou);
 
         }
 
