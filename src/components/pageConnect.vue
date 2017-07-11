@@ -6,8 +6,8 @@
        <!--
        <button @click.prevent="google"class="input-file" id='change' ></button>
        <label tabindex="0" for="change" class="input-file-trigger">google connect</label>-->
-       <a @click.prevent="facebook"class="btn">
-         Se connecter avec Facebook</a>
+ <!--      <a @click.prevent="facebook"class="btn">
+         Se connecter avec Facebook</a>-->
        <a @click.prevent="google"class="btn">
          Se connecter avec google</a>
 
@@ -228,7 +228,7 @@ export default {
 <style scoped>
   .container{
     position: fixed;
-    bottom: 5vh;
+    bottom: 25vh;
     left: 0;
     right: 0;
     margin: auto;
@@ -255,7 +255,7 @@ export default {
     font-size: 16px;
     padding: 13px 20px 13px 20px;
     text-decoration: none;
-    margin: 20px;
+    margin: 5px 0;
     display:inline-block;
   }
 

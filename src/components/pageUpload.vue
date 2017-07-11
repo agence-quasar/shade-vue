@@ -5,11 +5,9 @@
 
     <main>
       <div class="container">
-        <a class="icon-arrow-left2 arrow" @click="pageProfil"></a>
+        <a class="icon-retour arrow" @click="pageProfil"></a>
         <section id="canvas_wrapper"></section>
         <div>
-          <tabs>
-            <tab name="First tab" @click="test($event)">
 
               <div class="icon_container">
                 <figure >
@@ -23,11 +21,6 @@
                 </figure>
               </div>
 
-            </tab>
-            <tab name="Second tab">
-              developpement in progress
-            </tab>
-          </tabs>
 
           <a @click.prevent="send($event)"class="btn">
             Valider</a>
@@ -98,6 +91,9 @@ export default {
 
         let blob = vm.blob;
         let canvas = vm.canvas;
+        vm.$parent.profilPage = true;
+        vm.$parent.pageUpload = false;
+
 
         if (canvas.toBlob) {
           canvas.toBlob(
@@ -107,8 +103,7 @@ export default {
 
               let ref = firebase.storage().ref(JSON.stringify(date));
               ref.put(blob).then(function (snapshot) {
-                vm.$parent.profilPage = true;
-                vm.$parent.pageUpload = false;
+
               }).then(function () {
 
                 let ref = firebase.storage().ref(JSON.stringify(date));
@@ -171,76 +166,6 @@ export default {
           );
         }
 
-
-
-       /* canvas.toBlob(function (blob) {
-          let date = new Date();
-
-
-          let ref = firebase.storage().ref(JSON.stringify(date));
-          ref.put(blob).then(function (snapshot) {
-            vm.$parent.profilPage = true;
-            vm.$parent.pageUpload = false;
-          }).then(function () {
-
-            let ref = firebase.storage().ref(JSON.stringify(date));
-            let storeUrl;
-
-            let getUrl = function () {
-
-
-              ref.getDownloadURL().then(function (url) {
-                let xhr = new XMLHttpRequest();
-                xhr.responseType = 'blob';
-                xhr.onload = function (event) {
-                  let blob = xhr.response;
-                };
-                xhr.open('GET', url);
-                xhr.send();
-                storeUrl = url;
-
-                postUrl(storeUrl);
-
-
-              }).catch(function (error) {
-                console.log(error)
-              });
-
-
-            };
-            getUrl();
-            // post l'url de l'image dans un tableau photos dans la table user.uid
-            let postUrl = function () {
-              let cat = vm.cat;
-              let newRef = firebase.database().ref('photos/').push({
-
-                url: storeUrl,
-                category: cat,
-                userId: vm.user.uid,
-                like: 0,
-                pushId: 0
-
-
-              });
-              let pushId = newRef.key;
-              let niquePush = {};
-              niquePush['photos/' + pushId + '/pushId'] = pushId;
-              firebase.database().ref().update(niquePush);
-
-
-              let updates = {};
-              updates['users/' + vm.user.uid + '/isPhoto'] = true;
-              firebase.database().ref().update(updates);
-
-
-              vm.isPhoto = true;
-
-            }
-
-          });
-
-
-        }, 'image/jpeg', 0.6)*/
       }else{
       }
     }
@@ -253,8 +178,11 @@ export default {
   mounted:function () {
 
 
+
     let vm = this;
     let img = vm.blob;
+
+
 
 
     img.onload = function () {
@@ -263,7 +191,7 @@ export default {
       let imgHeight = img.height;
       let maxInternalSize = 800;
       let maxDisplaySize = 300;
-      let scaleRatio = maxDisplaySize / maxInternalSize;
+      //let scaleRatio = maxDisplaySize / maxInternalSize;
 
       let wrapper = document.getElementById('canvas_wrapper');
       /*
@@ -282,9 +210,11 @@ export default {
       ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, imgWidth, imgHeight);
 
       // fix for canvas internal size calc (attr) and display (style)
-      canvas.style.width = 99 + "%";
-      canvas.style.height = 350 + "px";
-      canvas.style.marginTop = -15 + "px"
+      canvas.style.width = 95 + "%";
+      canvas.style.height = 450 + "px";
+      canvas.style.marginTop = -15 + "px";
+
+
 
 
 
@@ -324,6 +254,8 @@ export default {
 main{
   background-image: url("../assets/background-profil.jpg");
   background-size: 100%;
+  background-attachment: fixed;
+
   overflow: auto;
   width: 100%;
   background-repeat:no-repeat;
@@ -338,17 +270,20 @@ main{
   margin: 20px;
 }
 .container{
-  width: 90%;
+  width: 95%;
   background-color: white;
   margin: 0 auto;
+  padding-bottom: 20px;
   border-radius: 10px;
   margin-top: 10vh;
-  -webkit-box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
-  -moz-box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
-  box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
+  -webkit-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  -moz-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  overflow: auto;
+
   text-align: center;
-  min-height: 100vh;
-display:inline-block;
+  min-height: 80vh;
+  display:inline-block;
 
 }
 .btn {

@@ -70,11 +70,11 @@ body{
 }
 @font-face {
   font-family: 'icomoon';
-  src:  url('./assets/fonts/icomoon.eot?l8rcxw');
-  src:  url('./assets/fonts/icomoon.eot?l8rcxw#iefix') format('embedded-opentype'),
-  url('./assets/fonts/icomoon.ttf?l8rcxw') format('truetype'),
-  url('./assets/fonts/icomoon.woff?l8rcxw') format('woff'),
-  url('./assets/fonts/icomoon.svg?l8rcxw#icomoon') format('svg');
+  src:  url('./assets/fonts/icomoon.eot?7ekcem');
+  src:  url('./assets/fonts/icomoon.eot?7ekcem#iefix') format('embedded-opentype'),
+  url('./assets/fonts/icomoon.ttf?7ekcem') format('truetype'),
+  url('./assets/fonts/icomoon.woff?7ekcem') format('woff'),
+  url('./assets/fonts/icomoon.svg?7ekcem#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -94,20 +94,64 @@ body{
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-arrow-left2:before {
-  content: "\e902";
-}
-.icon-photo:before {
+.icon-camera:before {
   content: "\e900";
+  color: #fff;
+}
+.icon-edit:before {
+  content: "\e901";
+  color: #3c1042;
+}
+.icon-Facebook:before {
+  content: "\e902";
+  color: #fff;
+}
+.icon-Flash_desactivé:before {
+  content: "\e903";
+  color: #fff;
+}
+.icon-Google:before {
+  content: "\e904";
+  color: #fff;
+}
+.icon-jeux_chrono:before {
+  content: "\e905";
+  color: #fff;
+}
+.icon-jeux_donnant:before {
+  content: "\e906";
+  color: #fff;
+}
+.icon-like-blc:before {
+  content: "\e907";
+  color: #fff;
 }
 .icon-like:before {
-  content: "\e901";
+  content: "\e908";
 }
-.icon-user:before {
-  content: "\e904";
+.icon-Profil:before {
+  content: "\e909";
+  color: #fff;
 }
-.icon-x:before {
-  content: "\e903";
+.icon-reglages:before {
+  content: "\e90a";
+  color: #3c1042;
+}
+.icon-retour-blc:before {
+  content: "\e90b";
+  color: #fff;
+}
+.icon-retour:before {
+  content: "\e90c";
+  color: #3c1042;
+}
+.icon-Tchat:before {
+  content: "\e90d";
+  color: #3c1042;
+}
+.icon-validation:before {
+  content: "\e90e";
+  color: #3c1042;
 }
 
 </style>

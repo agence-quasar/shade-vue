@@ -16,7 +16,7 @@ VueTouch.registerCustomEvent('doubletap', {
 });
 Vue.use(VueTouch);
 Vue.use(Tabs);
-Vue.use(Toast, 700 );
+Vue.use(Toast);
 
 
 

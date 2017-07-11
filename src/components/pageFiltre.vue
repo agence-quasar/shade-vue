@@ -3,7 +3,6 @@
   <main>
     <div class="container">
       <h1>Quels sont mes <strong>Fantasmes</strong></h1>
-      <a class="icon-arrow-left2 arrow" @click="flowPage"></a>
 
 
       <a class="btn" v-for="(value, key) in list"  v-bind:class="[value]" @click="add($event)">{{value}}</a>
@@ -114,18 +113,11 @@
 
 <style scoped>
   .container{
-    width: 85%;
-    background-color: white;
+    width: 90%;
     margin: 0 auto;
-    border-radius: 10px;
-    margin-top: 10vh;
-    -webkit-box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
-    -moz-box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
-    box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
-    text-align: center;
-    min-height: 85vh;
-    display:inline-block;
-    position: relative;
+    margin-top: 30vh;
+
+
 
   }
   .arrow{
@@ -135,6 +127,10 @@
     float: left;
     margin: 20px;
   }
+  h1{
+    font-size: 28px;
+    font-weight: 400;
+  }
   main{
     background-image: url("../assets/background-profil.jpg");
     background-size: 100%;
@@ -142,6 +138,7 @@
     width: 100%;
     background-repeat:no-repeat;
     min-height: 100vh;
+    position: fixed;
   }
   ul li {
     list-style: none;

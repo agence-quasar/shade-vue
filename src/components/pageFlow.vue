@@ -6,12 +6,12 @@
         <v-touch tag="div"
                  @doubletap="like($event)"
                  v-bind:class="[elem.pushId]"
+
         >
           <div class="image" :style="{ 'background-image': 'url(' + elem.url + ')' }" ></div>
         </v-touch>
       </li>
-      <div >
-      </div>
+
 
     </ul>
 
@@ -37,7 +37,8 @@
       return{
         user :appCompo.user,
         userTab : false,
-        picturesUrl:[]
+        picturesUrl:[],
+        stateUrl:[]
 
 
       }
@@ -60,6 +61,23 @@
         let owner = false;
         let photo = false;
         let like=false;
+
+
+
+
+        // yu.style.bottom='0px';
+
+        //yu.style.right='0px';
+        //yu.style.margin='auto';
+        //yu.style.height='150px';
+
+
+
+
+
+
+
+
         likeRef.once('value').then(function(snapshot) {
             let data = snapshot.val();
             console.log(data);
@@ -93,6 +111,16 @@
                     ref.push({
                       id : photo
                     })
+                    let yu = document.createElement('span');
+                    yu.classList = 'icon-like';
+                    yu.style.transition='all 0.5sec ease';
+                    parent.appendChild(yu);
+                    yu.style.position='absolute';
+                    yu.style.top='0px';
+                    yu.style.color ='#E6214B';
+                    yu.style.left=' -10px';
+                    yu.style.opacity='1';
+                    yu.style.fontSize='50px';
                     vm.toast();
                   }
                   else {
@@ -116,6 +144,16 @@
                         ref.push({
                           id : photo
                         })
+                        let yu = document.createElement('span');
+                        yu.classList = 'icon-like';
+                        yu.style.transition='all 0.5sec ease';
+                        parent.appendChild(yu);
+                        yu.style.position='absolute';
+                        yu.style.top='0px';
+                        yu.style.color ='#E6214B';
+                        yu.style.left=' -10px';
+                        yu.style.opacity='1';
+                        yu.style.fontSize='50px';
                         vm.toast();
                       }
                       else{
@@ -136,6 +174,9 @@
                           delet['users/' + vm.user.uid + '/likeList/' + ref1 + '/' + ref2 + '/id'] = null;
                           firebase.database().ref().update(delet);
                           vm.untoast();
+
+                         let ym =event.target.nextSibling;
+                         ym.style.opacity='0';
 
 
                         }
@@ -166,6 +207,16 @@
               ref.push({
                 id : photo
               })
+              let yu = document.createElement('span');
+              yu.classList = 'icon-like';
+              yu.style.transition='all 0.5sec ease';
+              parent.appendChild(yu);
+              yu.style.position='absolute';
+              yu.style.top='0px';
+              yu.style.color ='#E6214B';
+              yu.style.left=' -10px';
+              yu.style.opacity='1';
+              yu.style.fontSize='50px';
               vm.toast()
 
 
@@ -227,8 +278,10 @@
       }else{
         // cree un tableau avec tout les categories dans l'objet categoryActive
         let listActive = Object.values(categoryActive);
+        console.log(listActive);
 
         for (let i=0;i<listActive.length;i++){
+            console.log(listActive[i]);
           // boucle mes categorie ou aller chercher les photo equalto chaque categories actives
           let photoRef = firebase.database().ref('photos/');
           photoRef.orderByChild("category").equalTo(listActive[i]).on('value', function(snapshot) {
@@ -243,10 +296,19 @@
                 coucou.push(obj[1])
               });
 
-              vm.picturesUrl = coucou;
+                vm.stateUrl.push(coucou);
+                let newstate = Object.keys(vm.stateUrl).reduce(function(res, v) {
+                  return res.concat(vm.stateUrl[v]);
+                }, []);
+                vm.picturesUrl = newstate;
+
+                console.log(coucou);
+
+
             }
 
           });
+
         }
 
 
@@ -262,8 +324,10 @@
 
 
 <style scoped>
+
   main{
     background-image: url("../assets/background-profil.jpg");
+    background-attachment: fixed;
     background-size: 100%;
     overflow: auto;
     width: 100%;
@@ -274,8 +338,9 @@
     list-style: none;
     border-radius: 10px;
     display: block;
-    width: 80%;
+    width: 90%;
     margin: 20px auto;
+    position: relative;
 
   }
   ul {margin: 10vh 0 0 0;
@@ -289,6 +354,11 @@
     background : center center / cover;
     display:block;
   }
+  .image-container{
+    position: relative;
+
+  }
+
 
 </style>
 

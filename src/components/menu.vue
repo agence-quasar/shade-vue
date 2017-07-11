@@ -5,13 +5,13 @@
     <nav>
       <ul>
         <li>
-          <a class="btn" @click.prevent='goToFiltre'>filtres</a>
+          <span class="icon-reglages left" @click="goToFiltre"></span>
         </li>
         <li id="profil">
-          <figure @click.prevent="goToProfil" class="icon-user"></figure>
+          <figure @click.prevent="goToProfil" class="icon-Profil"></figure>
         </li>
         <li>
-          <button @click.prevent></button>
+          <span class="icon-Tchat right"></span>
         </li>
       </ul>
     </nav>
@@ -60,7 +60,7 @@ export default {
 
 
 <style scoped>
-  .icon-user:before {
+  .icon-Profil:before {
     position: absolute;
     bottom: 20px;
     left: 0px;
@@ -81,7 +81,6 @@ ul{
 nav{
   height:50px;
   background-color: white;
-  border-top:2px solid black;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -92,6 +91,17 @@ ul li {
 }
 ul li:first-child{
   margin-right: 70%;
+}
+.left{    position: absolute;
+  font-size: 35px;
+  top: 8px;
+  /* font-weight: 600; */
+  left: calc( 0.5 * (50% - 70px) );
+}
+.right{    position: absolute;
+    font-size: 35px;
+    top: 8px;
+  right: calc( 0.5 * (50% - 70px) );
 }
 #profil{
   position :absolute;
@@ -112,6 +122,10 @@ figure{
   margin:0;
   cursor: pointer;
   color: white;
+
+  -webkit-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  -moz-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
 }
 
   .btn {

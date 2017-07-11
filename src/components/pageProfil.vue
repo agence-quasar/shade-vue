@@ -5,18 +5,18 @@
 
     <main>
       <div class="container">
-        <a class="icon-arrow-left2 arrow" @click="flowPage"></a>
+        <a class="icon-retour arrow" @click="flowPage"></a>
+        <a class="icon-edit arrow-r" @click="edit($event)"></a>
         <h1>{{user.displayName}}</h1>
-
-        <button @click="test"></button>
-
         <div class="cardGlobal">
           <div class="containerCard"  v-for="elem in myPhoto" v-bind:class="[elem.pushId]" >
+
             <div class="photo-card"  >
-              <div class="image"  :style="{ 'background-image': 'url(' + elem.url + ')' }" >
+              <div class="image" v-bind:class="[elem.pushId]" :style="{ 'background-image': 'url(' + elem.url + ')' }" >
+                <span class="del hide" @click="removePhoto($event)">X</span>
               </div>
               <div class="heading">
-                <h2 class="title">like : {{elem.like}}</h2>
+                <h2 class="title"> {{elem.like}} <span class="icon-like"></span></h2>
                 <a class="icon-x close" v-bind:class="[elem.pushId]" @click="removePhoto($event)"></a>
               </div>
             </div>
@@ -29,8 +29,23 @@
       <footer>
         <nav>
           <ul>
-            <li id="profil" class="icon-photo">
+            <li id="profil" class="icon-camera">
+
               <input  class="input-file "  type="file" @change="onFileChange">
+
+             <!-- <picture-input
+                class="input-file "
+                ref="pictureInput"
+                @change="onFileChange"
+                margin="16"
+                width="600"
+                height="600"
+                accept="image/jpeg,image/png"
+                size="100"
+                buttonClass="input-file"
+                :autoToggleAspectRatio="true"
+                >
+              </picture-input>-->
             </li>
             <li id="photo_icon">
             </li>
@@ -52,8 +67,9 @@
 
 <script>
   import Vue from 'vue'
-import footerMenu from './menu'
-export default {
+  import footerMenu from './menu'
+
+  export default {
   name: 'pageProfil',
   components:{footerMenu},
   data : function () {
@@ -72,15 +88,25 @@ export default {
   },
 
   methods:{
-            test(event){
-              this.$parent.pageUpload = true;
-              this.$parent.profilPage = false;
+            edit(event){
+                let croix = document.getElementsByClassName('del');
+                for ( let i = 0 ; i < croix.length; i++){
+                    croix[i].classList.toggle('show');
+                    croix[i].classList.toggle('hide');
+
+                }
+                let edit = event.target;
+                console.log(edit);
+                edit.classList.toggle("icon-validation");
+                edit.classList.toggle("icon-edit")
             },
-            removePhoto(){
-                let container = event.currentTarget.parentElement.parentElement;
-                let str = event.currentTarget.getAttribute("class");
+            removePhoto(event){
+                console.log(event.target.parentElement);
+                let container = event.target.parentElement;
+                let str = container.getAttribute("class");
                 let res = str.split(" ");
-                firebase.database().ref('photos/' + res[2] ).remove()
+                console.log(res);
+                firebase.database().ref('photos/' + res[1] ).remove()
 
 
             },
@@ -91,7 +117,8 @@ export default {
 
             onFileChange(e) {
               let vm = this;
-              console.log('event ',e);
+              //console.log('event ',this.$refs.pictureInput.file);
+              //let files = this.$refs.pictureInput.file;
               let files = e.target.files ;//|| e.dataTransfer.files; // chope l'image
               console.log(files[0]);
               if (!files.length)
@@ -144,11 +171,31 @@ export default {
 </script>
 
 <style scoped>
+  .show{display: block}
+  .hide{display: none}
+  .del{    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: -2px;
+    font-size: 16px;
+    line-height: 25px;
+    right: -2px;
+    border-radius: 50%;
+    background-color: #e6184a;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;}
+.icon-like{
+  position: absolute;
+  top: -1px;
+  font-size: 22px;
+}
 label{
   border:1px solid black;
 }
 main{
   background-image: url("../assets/background-profil.jpg");
+  background-attachment: fixed;
   background-size: 100%;
   overflow: auto;
   width: 100%;
@@ -166,17 +213,27 @@ h1{
   float: left;
   margin: 20px;
 }
+.arrow-r{
+  font-size: 30px;
+  /* position: absolute; */
+  display: block;
+  float: right;
+  margin: 20px;
+}
 .container{
-  width: 85%;
+  width: 95%;
   background-color: white;
   margin: 0 auto;
+  padding-bottom: 20px;
   border-radius: 10px;
   margin-top: 10vh;
-  -webkit-box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
-  -moz-box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
-  box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
+  -webkit-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  -moz-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  overflow: auto;
+
   text-align: center;
-  min-height: 100vh;
+  min-height: 80vh;
 display:inline-block;
 
 }
@@ -213,6 +270,7 @@ input[type="file"]:focus {
   width: calc(50% - 10px);
   float: left;
   padding: 5px;
+  position: relative;
 }
 
 /*
@@ -234,7 +292,6 @@ footer ul{
 footer nav{
   height:40px;
   background-color: white;
-  border-top:2px solid black;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -261,6 +318,9 @@ footer #profil{
   cursor: pointer;
   color: white;
 
+  -webkit-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  -moz-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
 }
 
 footer input{
@@ -269,7 +329,7 @@ footer input{
   height: 50px;
   opacity: 0;
 }
-.icon-photo:before {
+.icon-camera:before {
   position: absolute;
   bottom: 17px;
   left: 0px;
@@ -277,6 +337,7 @@ footer input{
   text-align: center;
   color: white;
   font-size: 40px;
+  font-weight: 100;
 }
 #photo_icon{
   position: absolute;
@@ -306,7 +367,7 @@ footer input{
       border-radius: 2px 2px 0 0;
       height:0px;
      width:100%;
-     padding-bottom:106.25%;
+     padding-bottom:56.25%;
      background : center center / cover;
       display:block;
     }
