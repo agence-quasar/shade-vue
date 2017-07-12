@@ -113,7 +113,7 @@
 
 <style scoped>
   .container{
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     margin-top: 30vh;
 
@@ -138,7 +138,6 @@
     width: 100%;
     background-repeat:no-repeat;
     min-height: 100vh;
-    position: fixed;
   }
   ul li {
     list-style: none;
@@ -167,18 +166,12 @@
     -webkit-border-radius: 28;
     -moz-border-radius: 28;
     border-radius: 28px;
-    font-family: Arial;
     color: #ffffff;
     font-size: 22px;
     padding: 13px 0px 13px 0px;
     text-decoration: none;
     margin: 10px;
-    display:inline;
-    position: absolute;
-    bottom: 60px;
-    /* width: 100%; */
-    left: 0;
-    right: 0;
+    display:block;
   }
   .btn {
     background: -moz-linear-gradient(left, #e26a84 0%, #e5244e 100%); /* FF3.6-15 */
@@ -188,9 +181,9 @@
     -webkit-border-radius: 28;
     -moz-border-radius: 28;
     border-radius: 28px;
-    font-family: Arial;
     color: #ffffff;
     font-size: 16px;
+    font-weight: bold;
     padding: 13px 20px 13px 20px;
     text-decoration: none;
     margin: 10px;

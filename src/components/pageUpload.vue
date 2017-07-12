@@ -11,13 +11,40 @@
 
               <div class="icon_container">
                 <figure >
-                  <img src="../assets/cat1.jpg" @click="catF($event)"  id="bras" class="catImg">
+                  <img src="../assets/bras.jpg" @click="catF($event)"  id="bras" class="catImg">
                 </figure>
                 <figure >
-                  <img src="../assets/cat2.jpg" @click="catF($event)" id="main" class="catImg">
+                  <img src="../assets/mains.jpg" @click="catF($event)" id="main" class="catImg">
                 </figure>
                 <figure >
-                  <img src="../assets/cat3.jpg" @click="catF($event)" id="poitrine" class=" catImg">
+                  <img src="../assets/poitrines.jpg" @click="catF($event)" id="poitrine" class=" catImg">
+                </figure>
+                <figure >
+                  <img src="../assets/yeux.jpg" @click="catF($event)"  id="yeux" class="catImg">
+                </figure>
+                <figure >
+                  <img src="../assets/torses.jpg" @click="catF($event)" id="torse" class="catImg">
+                </figure>
+                <figure >
+                  <img src="../assets/bouches.jpg" @click="catF($event)" id="bouche" class=" catImg">
+                </figure>
+                <figure >
+                  <img src="../assets/cous.jpg" @click="catF($event)"  id="cous" class="catImg">
+                </figure>
+                <figure >
+                  <img src="../assets/dos.jpg" @click="catF($event)" id="dos" class="catImg">
+                </figure>
+                <figure >
+                  <img src="../assets/épaules.jpg" @click="catF($event)" id="epaule" class=" catImg">
+                </figure>
+                <figure >
+                  <img src="../assets/fesses.jpg" @click="catF($event)" id="fesses" class=" catImg">
+                </figure>
+                <figure >
+                  <img src="../assets/jambes.jpg" @click="catF($event)"  id="jambe" class="catImg">
+                </figure>
+                <figure >
+                  <img src="../assets/pieds.jpg" @click="catF($event)" id="pied" class="catImg">
                 </figure>
               </div>
 

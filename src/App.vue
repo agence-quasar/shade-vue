@@ -35,7 +35,7 @@ export default {
         blob : false,
         userTab : false,
       // add each list in pagefiltre
-        categoryList : ['bras','main','poitrine']
+        categoryList : ['bras','main','poitrine','yeux','torse','bouche','cous','dos','epaule','fesses','jambe','pied']
     }
   },
 
