@@ -117,24 +117,45 @@
 
             onFileChange(e) {
               let vm = this;
-              //console.log('event ',this.$refs.pictureInput.file);
-              //let files = this.$refs.pictureInput.file;
-              let files = e.target.files ;//|| e.dataTransfer.files; // chope l'image
-              console.log(files[0]);
-              if (!files.length)
-                return;
-
-              //for (let imgFile of e.target.files) {
-                let img = new Image;
-                img.src = URL.createObjectURL(files[0]);
-                vm.$parent.blob = img;
-                console.log(img);
 
 
-              //}
-              this.$parent.pageUpload = true;
-              this.$parent.profilPage = false;
-              //this.createImage(files[0]);
+
+
+              loadImage(
+                e.target.files[0],
+                function () {
+
+                    let file = e.target.files[0];
+                    vm.$parent.blob = file;
+                    console.log(file);
+                    vm.$parent.pageUpload = true;
+                    vm.$parent.profilPage = false;
+                },
+                {canvas : true} // Options
+              );
+
+
+
+
+              /*  let vm = this;
+                //console.log('event ',this.$refs.pictureInput.file);
+                //let files = this.$refs.pictureInput.file;
+                let files = e.target.files ;//|| e.dataTransfer.files; // chope l'image
+                console.log(files[0]);
+                if (!files.length)
+                  return;
+
+                //for (let imgFile of e.target.files) {
+                  let img = new Image;
+                  img.src = URL.createObjectURL(files[0]);
+                  vm.$parent.blob = img;
+                  console.log(img);
+
+
+                //}
+                this.$parent.pageUpload = true;
+                this.$parent.profilPage = false;
+                //this.createImage(files[0]);*/
 
             }
     },

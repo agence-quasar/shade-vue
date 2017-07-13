@@ -49,6 +49,10 @@ export default {
     pageUpload,
     pageFiltre
 
+  },
+  created(){
+      //alert("Attention, vous ne pourrez pas vous connecter si vous n'etes pas sur un vrai navigateur ");
+
   }
 }
 </script>
