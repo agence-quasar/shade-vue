@@ -7,11 +7,12 @@
         <li>
           <span class="icon-reglages left" @click="goToFiltre"></span>
         </li>
-        <li id="profil">
-          <figure @click.prevent="goToProfil" class="icon-Profil"></figure>
+        <li id="profil" class="icon-camera">
+          <input  class="input-file "  type="file" @change="onFileChange">
         </li>
         <li>
-          <span class="icon-Tchat right"></span>
+
+          <span class="icon-Profil right" @click="goToProfil"></span>
         </li>
       </ul>
     </nav>
@@ -36,12 +37,14 @@ export default {
       goToProfil:function () {
         let appComp = this.$parent.$parent;
         appComp.flowPage = false;
+        appComp.pageFiltre = false;
         appComp.profilPage = true;
 
       },
       goToFlow:function () {
         let appComp = this.$parent.$parent ;
         appComp.profilPage = false;
+        appComp.pageFiltre = false;
         appComp.flowPage = true;
 
       },
@@ -49,6 +52,32 @@ export default {
       let appComp = this.$parent.$parent ;
       appComp.pageFiltre = true;
       appComp.flowPage = false;
+      appComp.profilPage = false;
+
+
+    },
+    onFileChange(e) {
+      let vm = this;
+
+
+
+
+      loadImage(
+        e.target.files[0],
+        function () {
+
+          let file = e.target.files[0];
+          vm.$parent.blob = file;
+          console.log(file);
+          console.log(vm.$parent.$parent);
+          vm.$parent.$parent.pageUpload = true;
+          vm.$parent.$parent.profilPage = false;
+          vm.$parent.$parent.flowPage = false;
+          vm.$parent.$parent.pageFiltre = false;
+        },
+        {canvas : true} // Options
+      );
+
 
     }
 
@@ -60,15 +89,51 @@ export default {
 
 
 <style scoped>
-  .icon-Profil:before {
+  input[type="file"]:focus {
+    border: none;
+    outline: none;
+  }
+  input{
+    font-size: 0px;
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+  }
+  .icon-camera:before {
     position: absolute;
-    bottom: 20px;
+    bottom: 17px;
     left: 0px;
     right: 0px;
     text-align: center;
     color: white;
     font-size: 40px;
+    font-weight: 100;
   }
+  #photo_icon{
+    position: absolute;
+    bottom: -10px;
+    right: 0;
+    left: 0;
+  }
+
+
+  #profil{
+    font-size: 0px;
+    width: 70px;
+    height: 70px;
+    display: block;
+    position: absolute;
+    top: -35px;
+    left: 0;
+    right: 0;
+    border-radius: 50%;
+    background-color: #e6184a;
+    margin: 0 auto;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  }
+
 ul{
   list-style: none;
   display: inline-table;
@@ -84,6 +149,7 @@ nav{
   position: fixed;
   bottom: 0;
   width: 100%;
+  border-top:2px solid #3c1042;
 
 }
 ul li {
@@ -103,15 +169,7 @@ ul li:first-child{
     top: 8px;
   right: calc( 0.5 * (50% - 70px) );
 }
-#profil{
-  position :absolute;
-  top:-35px;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: 70px;
 
-}
 figure{
   font-size: 0px;
   width: 70px;

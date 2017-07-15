@@ -1,6 +1,8 @@
 <template>
 
   <main>
+
+    <a class="icon-retour arrow" @click="flowPage"></a>
     <div class="container">
       <h1>Quels sont mes <strong>Fantasmes</strong></h1>
 
@@ -12,6 +14,8 @@
 
 
     </div>
+    <footer-menu></footer-menu>
+
   </main>
 
 
@@ -20,10 +24,10 @@
 
 
 <script>
-
+  import footerMenu from './menu'
   export default {
     name: 'pageFiltre',
-
+    components:{footerMenu},
 
     data : function () {
       return{
@@ -115,7 +119,7 @@
   .container{
     width: 100%;
     margin: 0 auto;
-    margin-top: 30vh;
+    margin-top: 20vh;
 
 
 
@@ -173,7 +177,7 @@
     margin: 10px;
     display:block;
   }
-  .btn {
+  .btn_active {
     background: -moz-linear-gradient(left, #e26a84 0%, #e5244e 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(left,#e26a84 0%,#e5244e 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to right,#e26a84 0%,#e5244e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
@@ -190,7 +194,7 @@
     display:inline-block;
   }
 
-  .btn_active {
+  .btn {
     background: -moz-linear-gradient(to right, rgb(128, 78, 126) 0%, rgb(69, 28, 72) 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(to right, rgb(128, 78, 126) 0%, rgb(69, 28, 72) 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to right, rgb(128, 78, 126) 0%, rgb(69, 28, 72) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */

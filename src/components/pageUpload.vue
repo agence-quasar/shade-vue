@@ -219,19 +219,19 @@
         if (!loadImage(
             file,
             function(img, data){
-                console.log('tamere');
+                //console.log('tamere');
                 updateResults(img, data);
             },
             options
           )) {
-          console.error("filsdepute");
+          console.error("file non remonté");
         }
       }
 
       function updateResults (img, data) {
-        var content
+        //var content
         if (!(img.src || img instanceof HTMLCanvasElement)) {
-          console.log("ca a pas marché");
+          //console.log("ca a pas marché");
           //content = $('<span>Loading image file failed</span>');
         } else {
           /*
@@ -239,7 +239,7 @@
             .attr('download', currentFile.name)
             .attr('href', img.src || img.toDataURL())
             */
-          console.log("YOLO");
+          //console.log("YOLO");
           let imgWidth = img.width;
           let imgHeight = img.height;
 
@@ -274,8 +274,8 @@
           //actionsNode.show()
         }
         if (data && data.exif) {
-            console.log("exif", data.exif);
-            alert(data.exif['274']);
+            //console.log("exif", data.exif);
+            //alert(data.exif['274']);
           //displayExifData(data.exif)
         }
       }
@@ -308,7 +308,7 @@
        };*/
       !function (t) {
         "use strict";
-        var e = t.HTMLCanvasElement && t.HTMLCanvasElement.prototype, o = t.Blob && function () {
+        let e = t.HTMLCanvasElement && t.HTMLCanvasElement.prototype, o = t.Blob && function () {
             try {
               return Boolean(new Blob)
             } catch (t) {
@@ -321,7 +321,7 @@
               return !1
             }
           }(), r = t.BlobBuilder || t.WebKitBlobBuilder || t.MozBlobBuilder || t.MSBlobBuilder, a = /^data:((.*?)(;charset=.*?)?)(;base64)?,/, i = (o || r) && t.atob && t.ArrayBuffer && t.Uint8Array && function (t) {
-            var e, i, l, u, b, c, d, B, f;
+            let e, i, l, u, b, c, d, B, f;
             if (e = t.match(a), !e)throw new Error("invalid data URI");
             for (i = e[2] ? e[1] : "text/plain" + (e[3] || ";charset=US-ASCII"), l = !!e[4], u = t.slice(e[0].length), b = l ? atob(u) : decodeURIComponent(u), c = new ArrayBuffer(b.length), d = new Uint8Array(c), B = 0; B < b.length; B += 1)d[B] = b.charCodeAt(B);
             return o ? new Blob([n ? d : c], {type: i}) : (f = new r, f.append(c), f.getBlob(i))

@@ -135,8 +135,9 @@ body{
 }
 .icon-Profil:before {
   content: "\e909";
-  color: #fff;
+  color: rgb(69, 28, 72);
 }
+
 .icon-reglages:before {
   content: "\e90a";
   color: #3c1042;

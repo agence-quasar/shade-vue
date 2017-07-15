@@ -7,7 +7,7 @@
       <div class="container">
         <a class="icon-retour arrow" @click="flowPage"></a>
         <a class="icon-edit arrow-r" @click="edit($event)"></a>
-        <h1>{{user.displayName}}</h1>
+        <h4>profil : {{user.displayName}}</h4>
         <div class="cardGlobal">
           <div class="containerCard"  v-for="elem in myPhoto" v-bind:class="[elem.pushId]" >
 
@@ -135,28 +135,6 @@
               );
 
 
-
-
-              /*  let vm = this;
-                //console.log('event ',this.$refs.pictureInput.file);
-                //let files = this.$refs.pictureInput.file;
-                let files = e.target.files ;//|| e.dataTransfer.files; // chope l'image
-                console.log(files[0]);
-                if (!files.length)
-                  return;
-
-                //for (let imgFile of e.target.files) {
-                  let img = new Image;
-                  img.src = URL.createObjectURL(files[0]);
-                  vm.$parent.blob = img;
-                  console.log(img);
-
-
-                //}
-                this.$parent.pageUpload = true;
-                this.$parent.profilPage = false;
-                //this.createImage(files[0]);*/
-
             }
     },
   created:function () {
@@ -223,8 +201,9 @@ main{
   background-repeat:no-repeat;
   position: relative
 }
-h1{
+h4{
   clear: both;
+  margin-top: 60px;
 
 }
 .arrow{
@@ -261,6 +240,7 @@ nav{
   display: block;
   width: 100%;
   height: 30px;
+  border-top:2px solid #3c1042;
 }
 
 ul{

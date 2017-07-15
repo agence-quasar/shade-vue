@@ -85,7 +85,7 @@ export default {
 
 
               parent.isConnect = true;
-              parent.profilPage = true;
+              parent.flowPage = true;
               parent.user = user;
               parent.userTab = data;
             }
@@ -150,7 +150,7 @@ export default {
 
 
             parent.isConnect = true;
-            parent.profilPage = true;
+            parent.flowPage = true;
             parent.user = user;
             parent.userTab = data;
           }
@@ -209,7 +209,7 @@ export default {
 
 
             parent.isConnect = true;
-            parent.profilPage = true;
+            parent.flowPage = true;
             parent.user = user;
             parent.userTab = data;
           }

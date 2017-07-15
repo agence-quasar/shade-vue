@@ -1,6 +1,7 @@
 <template>
 
   <main>
+    <h1 v-if="empty">aucune photo ici, Postez en une !</h1>
     <ul>
       <li v-for="elem in picturesUrl">
         <v-touch tag="div"
@@ -14,6 +15,7 @@
 
 
     </ul>
+
 
     <footer-menu></footer-menu>
   </main>
@@ -38,7 +40,8 @@
         user :appCompo.user,
         userTab : false,
         picturesUrl:[],
-        stateUrl:[]
+        stateUrl:[],
+        empty:false,
 
 
       }
@@ -252,6 +255,12 @@
       });
       vm.$parent.userTab = vm.userTab;
       let categoryActive = vm.userTab.categoryActive;
+      function shuffle(a) {
+        for (let i = a.length; i; i--) {
+          let j = Math.floor(Math.random() * i);
+          [a[i - 1], a[j]] = [a[j], a[i - 1]];
+        }
+      }
 
       if (!categoryActive) {
           console.log('category active = ', vm.userTab.categoryActive);
@@ -270,8 +279,10 @@
               coucou.push(obj[1])
             });
 
-            vm.picturesUrl = coucou
+            vm.picturesUrl = coucou;
+            shuffle(vm.picturesUrl);
           }
+
 
 
         });
@@ -300,6 +311,8 @@
 
 
 
+
+
             }
 
           });
@@ -307,14 +320,20 @@
             return res.concat(vm.stateUrl[v]);
           }, []);
           vm.picturesUrl = newstate;
+          if(vm.picturesUrl.length === 0){
+              vm.empty = true;
+          }
 
-          //console.log(coucou);
+
+
+          shuffle(vm.picturesUrl);
 
         }
 
 
-      }
+      } // end else
 
+        
 
       }
 
