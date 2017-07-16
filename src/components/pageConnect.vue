@@ -72,7 +72,8 @@ export default {
                   created : JSON.stringify(date),
                   dateList : false,
                   categoryActive : false,
-                  likeList : false
+                  likeList : false,
+                  provider:'google'
                 }
               })
 
@@ -136,7 +137,8 @@ export default {
                 created : JSON.stringify(date),
                 dateList : false,
                 categoryActive : false,
-                likeList : false
+                likeList : false,
+                provider:'facebook'
 
               }
             })
@@ -196,7 +198,8 @@ export default {
                 created : JSON.stringify(date),
                 dateList : false,
                 categoryActive : false,
-                likeList : false
+                likeList : false,
+                provider:'twitter'
               }
             })
 

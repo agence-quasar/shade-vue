@@ -14,7 +14,7 @@
 
 
     </div>
-    <footer-menu></footer-menu>
+    <!--<footer-menu></footer-menu>-->
 
   </main>
 
@@ -141,7 +141,7 @@
     overflow: auto;
     width: 100%;
     background-repeat:no-repeat;
-    min-height: 100vh;
+    height: 100%
   }
   ul li {
     list-style: none;
@@ -177,7 +177,7 @@
     margin: 10px;
     display:block;
   }
-  .btn_active {
+  .btn {
     background: -moz-linear-gradient(left, #e26a84 0%, #e5244e 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(left,#e26a84 0%,#e5244e 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to right,#e26a84 0%,#e5244e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
@@ -194,7 +194,7 @@
     display:inline-block;
   }
 
-  .btn {
+  .btn_active {
     background: -moz-linear-gradient(to right, rgb(128, 78, 126) 0%, rgb(69, 28, 72) 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(to right, rgb(128, 78, 126) 0%, rgb(69, 28, 72) 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to right, rgb(128, 78, 126) 0%, rgb(69, 28, 72) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */

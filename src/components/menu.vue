@@ -5,14 +5,17 @@
     <nav>
       <ul>
         <li>
-          <span class="icon-reglages left" @click="goToFiltre"></span>
+          <span v-show="!profil" class="icon-reglages left" @click="goToFiltre"></span>
+          <span v-show="profil" class="icon-flow left" @click="goToFLow"></span>
         </li>
         <li id="profil" class="icon-camera">
           <input  class="input-file "  type="file" @change="onFileChange">
         </li>
         <li>
 
-          <span class="icon-Profil right" @click="goToProfil"></span>
+          <span v-show="!profil" class="icon-Profil right" @click="goToProfil"></span>
+          <a v-show="profil" class="icon-edit arrow-r right" @click="edit"></a>
+
         </li>
       </ul>
     </nav>
@@ -29,27 +32,33 @@ export default {
   name: 'footerMenu',
   data:function () {
     return{
+        profil : false,
 
     }
   },
 
   methods: {
+      edit:function () {
+        let vm = this;
+        console.log(vm.$children);
+        vm.$parent.$children[1].edit(event);
+      },
       goToProfil:function () {
-        let appComp = this.$parent.$parent;
+        let appComp = this.$parent;
         appComp.flowPage = false;
         appComp.pageFiltre = false;
         appComp.profilPage = true;
 
       },
-      goToFlow:function () {
-        let appComp = this.$parent.$parent ;
+    goToFLow:function () {
+        let appComp = this.$parent ;
         appComp.profilPage = false;
         appComp.pageFiltre = false;
         appComp.flowPage = true;
 
       },
     goToFiltre:function () {
-      let appComp = this.$parent.$parent ;
+      let appComp = this.$parent ;
       appComp.pageFiltre = true;
       appComp.flowPage = false;
       appComp.profilPage = false;
@@ -66,14 +75,16 @@ export default {
         e.target.files[0],
         function () {
 
+
           let file = e.target.files[0];
+          //console.log(file);
           vm.$parent.blob = file;
           console.log(file);
-          console.log(vm.$parent.$parent);
-          vm.$parent.$parent.pageUpload = true;
-          vm.$parent.$parent.profilPage = false;
-          vm.$parent.$parent.flowPage = false;
-          vm.$parent.$parent.pageFiltre = false;
+          console.log(vm.$parent);
+          vm.$parent.pageUpload = true;
+          vm.$parent.profilPage = false;
+          vm.$parent.flowPage = false;
+          vm.$parent.pageFiltre = false;
         },
         {canvas : true} // Options
       );
@@ -81,7 +92,7 @@ export default {
 
     }
 
-  }
+  },
 
 }
 
@@ -101,12 +112,12 @@ export default {
   }
   .icon-camera:before {
     position: absolute;
-    bottom: 17px;
+    bottom: 20px;
     left: 0px;
     right: 0px;
     text-align: center;
     color: white;
-    font-size: 40px;
+    font-size: 33px;
     font-weight: 100;
   }
   #photo_icon{

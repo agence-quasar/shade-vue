@@ -1,23 +1,38 @@
 <template>
 
   <main>
+    <div class="spinner" v-show="loading">
+      <div class="dot1"></div>
+      <div class="dot2"></div>
+    </div>
     <h1 v-if="empty">aucune photo ici, Postez en une !</h1>
-    <ul>
-      <li v-for="elem in picturesUrl">
-        <v-touch tag="div"
-                 @doubletap="like($event)"
-                 v-bind:class="[elem.pushId]"
-
-        >
-          <div class="image" :style="{ 'background-image': 'url(' + elem.url + ')' }" ></div>
-        </v-touch>
-      </li>
 
 
-    </ul>
+
+    <div    v-infinite-scroll="loadMore"
+            infinite-scroll-disabled="busy"
+            infinite-scroll-distance="0"
+    >
+      <ul>
+        <li v-for="elem in picturesUrl">
+          <v-touch tag="div"
+                   @doubletap="like($event)"
+                   v-bind:class="[elem.pushId]"
+
+          >
+            <div class="image" :style="{ 'background-image': 'url(' + elem.url + ')' }" ></div>
+          </v-touch>
+        </li>
 
 
+      </ul>
+    </div>
+
+
+
+<!--
     <footer-menu></footer-menu>
+-->
   </main>
 
 
@@ -42,16 +57,151 @@
         picturesUrl:[],
         stateUrl:[],
         empty:false,
+        busy: true,
+        lastEntry : 0,
+        loading:true
 
 
       }
 
     },
 
+
     methods: {
-        toast: function () {
-          this.$toast.top('like');  // or this.$toast.bottom('bottom');
-        },
+
+      loadMore: function () {
+        let vm = this;
+        vm.busy = true;
+        console.log('plop new call' );
+
+        setTimeout(function () {
+
+          let categoryActive = vm.userTab.categoryActive;
+
+          function shuffle(a) {
+            for (let i = a.length; i; i--) {
+              let j = Math.floor(Math.random() * i);
+              [a[i - 1], a[j]] = [a[j], a[i - 1]];
+            }
+          }
+
+          if (!categoryActive) {
+            console.log('category active = ', vm.userTab.categoryActive);
+            vm.loading=true;
+
+
+            let photoRef = firebase.database().ref('photos/');
+            if (vm.lastEntry){
+              console.log('YLO');
+              photoRef.orderByKey().startAt(vm.lastEntry).limitToFirst(4).once('value').then(function (snapshot) {
+                let data = snapshot.val();
+                let coucou=[];
+                if (data) {
+                  let dataB = Object.keys(data).map(function (key, index) {
+                    console.log(key, index);
+                    if((index+1)%4 == 0){
+                      console.log("last");
+                      vm.lastEntry = key;
+                    }
+                    return [Number(key), data[key]];
+                  });
+                  dataB.map(function (obj) {
+                    coucou.push(obj[1])
+                  });
+                  //shuffle(coucou);
+                  coucou.splice(0,1);
+                  vm.picturesUrl = vm.picturesUrl.concat(coucou);
+                  console.log('concat batard');
+                }
+
+                vm.busy =false;
+              });
+            }
+            else{
+              console.log('first call');
+              photoRef.orderByKey().limitToFirst(3).once('value').then(function (snapshot) {
+
+
+                let data = snapshot.val();
+                let coucou=[];
+                if (data) {
+                  let dataB = Object.keys(data).map(function (key, index) {
+                    console.log(key, index);
+                    if((index+1)%3 == 0){
+                      console.log("last");
+                      vm.lastEntry = key;
+                    }
+                    return [Number(key), data[key]];
+                  });
+                  dataB.map(function (obj) {
+                    coucou.push(obj[1])
+                  });
+                  //shuffle(coucou);
+                  vm.picturesUrl = coucou;
+                  console.log('batard');
+                }
+
+                vm.busy =false;
+
+              });
+            }
+
+
+          }else{
+            // cree un tableau avec tout les categories dans l'objet categoryActive
+            let listActive = Object.values(categoryActive);
+            console.log(listActive);
+
+            for (let i=0;i<listActive.length;i++){
+              console.log(listActive[i]);
+              // boucle mes categorie ou aller chercher les photo equalto chaque categories actives
+              let photoRef = firebase.database().ref('photos/');
+              photoRef.orderByChild("category").equalTo(listActive[i]).on('value', function(snapshot) {
+
+                let data = snapshot.val();
+                let coucou = [];
+                if (data) {
+                  let dataB = Object.keys(data).map(function (e) {
+                    return [Number(e), data[e]];
+                  });
+                  dataB.map(function (obj) {
+                    coucou.push(obj[1])
+                  });
+
+                  vm.stateUrl.push(coucou);
+
+
+
+
+
+                }
+
+              });
+              let newstate = Object.keys(vm.stateUrl).reduce(function(res, v) {
+                return res.concat(vm.stateUrl[v]);
+              }, []);
+              vm.picturesUrl = newstate;
+
+
+
+
+              //shuffle(vm.picturesUrl);
+
+            }
+
+
+          } // end else
+
+          console.log('end... ' + new Date());
+          vm.busy = false;
+          vm.loading=false;
+        }, 1000)
+
+      },
+
+      toast: function () {
+        this.$toast.top('like');  // or this.$toast.bottom('bottom');
+      },
       untoast: function () {
         this.$toast.top('unlike');  // or this.$toast.bottom('bottom');
       },
@@ -82,29 +232,62 @@
 
 
         likeRef.once('value').then(function(snapshot) {
-            let data = snapshot.val();
-            console.log(data);
+          let data = snapshot.val();
+          console.log(data);
 
 
-            photo = data.pushId;
-            like = data.like;
-            owner = data.userId;
-            let obj = userTab.likeList;
-            if(userTab.likeList){
+          photo = data.pushId;
+          like = data.like;
+          owner = data.userId;
+          let obj = userTab.likeList;
+          if(userTab.likeList){
 
 
-              console.log('1) peut étre un like');
+            console.log('1) peut étre un like');
 
-              // fetch user/id/likeList
-              let photoRef = firebase.database().ref('users/' + vm.user.uid +'/likeList' );
-              photoRef.orderByKey().equalTo(owner).once('value').then(function(snapshot) {
+            // fetch user/id/likeList
+            let photoRef = firebase.database().ref('users/' + vm.user.uid +'/likeList' );
+            photoRef.orderByKey().equalTo(owner).once('value').then(function(snapshot) {
 
-                  let userID = snapshot.val();
-                  // si l'utilisateur de le photo existe chez l'utilisateur qui like
-                  if(userID === null){
-                      // l'utilisateur en question n'existe pas dans liekList donc je l'ajoute et je like
-                    console.log('finalement aucun like donc je like');
+              let userID = snapshot.val();
+              // si l'utilisateur de le photo existe chez l'utilisateur qui like
+              if(userID === null){
+                // l'utilisateur en question n'existe pas dans liekList donc je l'ajoute et je like
+                console.log('finalement aucun like donc je like');
 
+                like ++;
+                let updates = {};
+                updates['photos/'+photo+'/like'] = like;
+                firebase.database().ref().update(updates);
+
+                let ref = firebase.database().ref('users/' + vm.user.uid + '/likeList/' +  owner);
+                ref.push({
+                  id : photo
+                })
+                let yu = document.createElement('span');
+                yu.classList = 'icon-like';
+                yu.style.transition='all 0.5sec ease';
+                parent.appendChild(yu);
+                yu.style.position='absolute';
+                yu.style.top='0px';
+                yu.style.color ='#E6214B';
+                yu.style.left=' -10px';
+                yu.style.opacity='1';
+                yu.style.fontSize='50px';
+                vm.toast();
+              }
+              else {
+                // l'uilisateur existe donc on va chercher dans ce tableau si il y a une photo
+                console.log('plop',userID);
+                let ref1 = Object.keys(userID)[0];
+
+                let photoRef = firebase.database().ref('users/' + vm.user.uid + '/likeList/' + Object.keys(userID)[0]);
+                photoRef.orderByChild('id').equalTo(photo).once('value').then(function (snapshot) {
+
+                  let data = snapshot.val();
+                  //console.log('before ref',data);
+                  if(data === null){
+                    console.log('likelist + userid  mais nouvelle photo');
                     like ++;
                     let updates = {};
                     updates['photos/'+photo+'/like'] = like;
@@ -126,106 +309,73 @@
                     yu.style.fontSize='50px';
                     vm.toast();
                   }
-                  else {
-                    // l'uilisateur existe donc on va chercher dans ce tableau si il y a une photo
-                    console.log('plop',userID);
-                    let ref1 = Object.keys(userID)[0];
-
-                    let photoRef = firebase.database().ref('users/' + vm.user.uid + '/likeList/' + Object.keys(userID)[0]);
-                    photoRef.orderByChild('id').equalTo(photo).once('value').then(function (snapshot) {
-
-                      let data = snapshot.val();
-                      //console.log('before ref',data);
-                      if(data === null){
-                          console.log('likelist + userid  mais nouvelle photo');
-                        like ++;
-                        let updates = {};
-                        updates['photos/'+photo+'/like'] = like;
-                        firebase.database().ref().update(updates);
-
-                        let ref = firebase.database().ref('users/' + vm.user.uid + '/likeList/' +  owner);
-                        ref.push({
-                          id : photo
-                        })
-                        let yu = document.createElement('span');
-                        yu.classList = 'icon-like';
-                        yu.style.transition='all 0.5sec ease';
-                        parent.appendChild(yu);
-                        yu.style.position='absolute';
-                        yu.style.top='0px';
-                        yu.style.color ='#E6214B';
-                        yu.style.left=' -10px';
-                        yu.style.opacity='1';
-                        yu.style.fontSize='50px';
-                        vm.toast();
-                      }
-                      else{
-                        let ref2 = Object.keys(data)[0];
-                        let pouet = data[Object.keys(data)[0]];
-                        console.log('ref2', ref2);
-                        let nqtm = pouet.id;
-                        console.log('nqtm', nqtm);
-                        if (photo === nqtm) {
-                          console.log('tu as déjo liké cette photo');
-                          like--;
-                          let updates = {};
-                          updates['photos/' + photo + '/like'] = like;
-                          firebase.database().ref().update(updates);
+                  else{
+                    let ref2 = Object.keys(data)[0];
+                    let pouet = data[Object.keys(data)[0]];
+                    console.log('ref2', ref2);
+                    let nqtm = pouet.id;
+                    console.log('nqtm', nqtm);
+                    if (photo === nqtm) {
+                      console.log('tu as déjo liké cette photo');
+                      like--;
+                      let updates = {};
+                      updates['photos/' + photo + '/like'] = like;
+                      firebase.database().ref().update(updates);
 
 
-                          let delet = {};
-                          delet['users/' + vm.user.uid + '/likeList/' + ref1 + '/' + ref2 + '/id'] = null;
-                          firebase.database().ref().update(delet);
-                          vm.untoast();
+                      let delet = {};
+                      delet['users/' + vm.user.uid + '/likeList/' + ref1 + '/' + ref2 + '/id'] = null;
+                      firebase.database().ref().update(delet);
+                      vm.untoast();
 
-                         let ym =event.target.nextSibling;
-                         ym.style.opacity='0';
-
-
-                        }
-                      }
+                      let ym =event.target.nextSibling;
+                      ym.style.opacity='0';
 
 
-
-                    });
+                    }
                   }
 
 
 
-              });
+                });
+              }
 
 
 
-            }
-            // pas de likeList je like auto ( likelist = false)
-            else{
-              console.log('aucun like cest sur donc like++' );
-
-              like ++;
-              let updates = {};
-              updates['photos/'+photo+'/like'] = like;
-              firebase.database().ref().update(updates);
-
-              let ref = firebase.database().ref('users/' + vm.user.uid + '/likeList/' +  owner);
-              ref.push({
-                id : photo
-              })
-              let yu = document.createElement('span');
-              yu.classList = 'icon-like';
-              yu.style.transition='all 0.5sec ease';
-              parent.appendChild(yu);
-              yu.style.position='absolute';
-              yu.style.top='0px';
-              yu.style.color ='#E6214B';
-              yu.style.left=' -10px';
-              yu.style.opacity='1';
-              yu.style.fontSize='50px';
-              vm.toast()
+            });
 
 
 
+          }
+          // pas de likeList je like auto ( likelist = false)
+          else{
+            console.log('aucun like cest sur donc like++' );
 
-            }
+            like ++;
+            let updates = {};
+            updates['photos/'+photo+'/like'] = like;
+            firebase.database().ref().update(updates);
+
+            let ref = firebase.database().ref('users/' + vm.user.uid + '/likeList/' +  owner);
+            ref.push({
+              id : photo
+            })
+            let yu = document.createElement('span');
+            yu.classList = 'icon-like';
+            yu.style.transition='all 0.5sec ease';
+            parent.appendChild(yu);
+            yu.style.position='absolute';
+            yu.style.top='0px';
+            yu.style.color ='#E6214B';
+            yu.style.left=' -10px';
+            yu.style.opacity='1';
+            yu.style.fontSize='50px';
+            vm.toast()
+
+
+
+
+          }
 
 
 
@@ -245,7 +395,9 @@
 
     components:{footerMenu},
 
-    created : function () {
+    mounted : function () {
+
+
       let vm = this;
 
       let ref = firebase.database().ref('users/' + vm.user.uid );
@@ -254,88 +406,10 @@
         vm.userTab = data;
       });
       vm.$parent.userTab = vm.userTab;
-      let categoryActive = vm.userTab.categoryActive;
-      function shuffle(a) {
-        for (let i = a.length; i; i--) {
-          let j = Math.floor(Math.random() * i);
-          [a[i - 1], a[j]] = [a[j], a[i - 1]];
-        }
-      }
-
-      if (!categoryActive) {
-          console.log('category active = ', vm.userTab.categoryActive);
-
-        let photoRef = firebase.database().ref('photos/');
-        photoRef.on('value', function (snapshot) {
+      this.loadMore();
 
 
-          let data = snapshot.val();
-          let coucou=[];
-          if (data) {
-            let dataB = Object.keys(data).map(function (e) {
-              return [Number(e), data[e]];
-            });
-            dataB.map(function (obj) {
-              coucou.push(obj[1])
-            });
-
-            vm.picturesUrl = coucou;
-            shuffle(vm.picturesUrl);
-          }
-
-
-
-        });
-      }else{
-        // cree un tableau avec tout les categories dans l'objet categoryActive
-        let listActive = Object.values(categoryActive);
-        console.log(listActive);
-
-        for (let i=0;i<listActive.length;i++){
-            console.log(listActive[i]);
-          // boucle mes categorie ou aller chercher les photo equalto chaque categories actives
-          let photoRef = firebase.database().ref('photos/');
-          photoRef.orderByChild("category").equalTo(listActive[i]).on('value', function(snapshot) {
-
-            let data = snapshot.val();
-            let coucou = [];
-            if (data) {
-              let dataB = Object.keys(data).map(function (e) {
-                return [Number(e), data[e]];
-              });
-              dataB.map(function (obj) {
-                coucou.push(obj[1])
-              });
-
-                vm.stateUrl.push(coucou);
-
-
-
-
-
-            }
-
-          });
-          let newstate = Object.keys(vm.stateUrl).reduce(function(res, v) {
-            return res.concat(vm.stateUrl[v]);
-          }, []);
-          vm.picturesUrl = newstate;
-          if(vm.picturesUrl.length === 0){
-              vm.empty = true;
-          }
-
-
-
-          shuffle(vm.picturesUrl);
-
-        }
-
-
-      } // end else
-
-        
-
-      }
+    }
 
   }
 
@@ -352,7 +426,8 @@
     overflow: auto;
     width: 100%;
     background-repeat:no-repeat;
-    min-height: 100vh;
+    box-sizing: border-box;
+    height: 100%;
   }
   ul li {
     list-style: none;

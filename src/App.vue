@@ -1,10 +1,18 @@
 <template>
   <div id="app">
-    <page-connect v-if="!isConnect"></page-connect>
-    <page-profil v-if="profilPage"></page-profil>
-    <page-flow v-if="flowPage"></page-flow>
-    <page-upload v-if="pageUpload"></page-upload>
-    <page-filtre v-if="pageFiltre"></page-filtre>
+
+
+
+      <page-profil v-if="profilPage"></page-profil>
+      <page-flow v-if="flowPage"></page-flow>
+      <page-upload v-if="pageUpload"></page-upload>
+      <page-filtre v-if="pageFiltre"></page-filtre>
+      <page-connect v-if="!isConnect"></page-connect>
+
+    <footer-menu v-show="isConnect"></footer-menu>
+
+
+
 
   </div>
 </template>
@@ -15,6 +23,7 @@ import pageProfil from './components/pageProfil'
 import pageFlow from './components/pageFlow'
 import pageUpload from './components/pageUpload'
 import pageFiltre from './components/pageFiltre'
+import footerMenu from './components/menu'
 
 
 
@@ -35,7 +44,8 @@ export default {
         blob : false,
         userTab : false,
       // add each list in pagefiltre
-        categoryList : ['bras','main','poitrine','yeux','torse','bouche','cous','dos','epaule','fesses','jambe','pied']
+        categoryList : ['bras','main','poitrine','yeux','torse','bouche','cous','dos','epaule','fesses','jambe','pied'],
+      show:true
     }
   },
 
@@ -47,17 +57,74 @@ export default {
     pageProfil,
     pageFlow,
     pageUpload,
-    pageFiltre
+    pageFiltre,
+    footerMenu
 
   },
-  created(){
+  updated(){
       //alert("Attention, vous ne pourrez pas vous connecter si vous n'etes pas sur un vrai navigateur ");
+    console.log('change', this.$children[0])
+    this.$children[0].profil = this.profilPage
 
   }
 }
 </script>
 
 <style>
+
+
+  .spinner {
+    margin: 100px auto;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 41;
+    bottom:80px;
+
+    -webkit-animation: sk-rotate 2.0s infinite linear;
+    animation: sk-rotate 2.0s infinite linear;
+  }
+
+  .dot1, .dot2 {
+    width: 60%;
+    height: 60%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    background-color: #333;
+    border-radius: 100%;
+
+    -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+    animation: sk-bounce 2.0s infinite ease-in-out;
+  }
+
+  .dot2 {
+    top: auto;
+    bottom: 0;
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+  }
+
+  @-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
+  @keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+  @-webkit-keyframes sk-bounce {
+    0%, 100% { -webkit-transform: scale(0.0) }
+    50% { -webkit-transform: scale(1.0) }
+  }
+
+  @keyframes sk-bounce {
+    0%, 100% {
+      transform: scale(0.0);
+      -webkit-transform: scale(0.0);
+    } 50% {
+        transform: scale(1.0);
+        -webkit-transform: scale(1.0);
+      }
+  }
 body{
   margin: 0;
   padding: 0;
@@ -70,7 +137,9 @@ body{
   color: #2c3e50;
   width:100%;
   background-color: #e7dee8;
-  padding-bottom: 200px;
+  padding-bottom: 70px;
+  height: 100vh;
+  box-sizing: border-box;
 }
 @font-face {
   font-family: 'icomoon';
@@ -97,7 +166,10 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+  .icon-flow:before {
+    content: "\e90f";
+    color: rgb(69, 28, 72);
+  }
 .icon-camera:before {
   content: "\e900";
   color: #fff;

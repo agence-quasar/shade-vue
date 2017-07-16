@@ -6,7 +6,6 @@
     <main>
       <div class="container">
         <a class="icon-retour arrow" @click="flowPage"></a>
-        <a class="icon-edit arrow-r" @click="edit($event)"></a>
         <h4>profil : {{user.displayName}}</h4>
         <div class="cardGlobal">
           <div class="containerCard"  v-for="elem in myPhoto" v-bind:class="[elem.pushId]" >
@@ -26,32 +25,11 @@
 
 
       </div>
-      <footer>
-        <nav>
-          <ul>
-            <li id="profil" class="icon-camera">
 
-              <input  class="input-file "  type="file" @change="onFileChange">
+<!--
+      <footer-menu></footer-menu>
+-->
 
-             <!-- <picture-input
-                class="input-file "
-                ref="pictureInput"
-                @change="onFileChange"
-                margin="16"
-                width="600"
-                height="600"
-                accept="image/jpeg,image/png"
-                size="100"
-                buttonClass="input-file"
-                :autoToggleAspectRatio="true"
-                >
-              </picture-input>-->
-            </li>
-            <li id="photo_icon">
-            </li>
-          </ul>
-        </nav>
-      </footer>
     </main>
 
 
@@ -82,7 +60,7 @@
         msg : {a :false, b:"Postez une photo"},
         myPhoto:false,
         classId:false,
-        active:true
+        active:true,
       }
 
   },
@@ -225,6 +203,7 @@ h4{
   background-color: white;
   margin: 0 auto;
   padding-bottom: 20px;
+  margin-bottom:70px;
   border-radius: 10px;
   margin-top: 10vh;
   -webkit-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);

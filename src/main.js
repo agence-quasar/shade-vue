@@ -4,6 +4,8 @@ import App from './App'
 import Tabs from 'vue-tabs-component';
 import 'vue2-toast/lib/toast.css';
 import Toast from 'vue2-toast';
+import infiniteScroll from 'vue-infinite-scroll'
+
 
 
 
@@ -17,12 +19,15 @@ VueTouch.registerCustomEvent('doubletap', {
 Vue.use(VueTouch);
 Vue.use(Tabs);
 Vue.use(Toast);
+Vue.use(infiniteScroll);
+
+
 
 
 
 
 /* eslint-disable no-new */
-new Vue({
+let AppVue = new Vue({
   el: '#app',
   template: '<App/>',
   data: {
