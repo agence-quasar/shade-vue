@@ -7,7 +7,7 @@
         <a class="icon-retour arrow" @click="pageProfil"></a>
         <section id="canvas_wrapper"></section>
         <div>
-
+        <div class="container-out">
           <div class="icon_container">
             <figure>
               <img src="../assets/bras.jpg" @click="catF($event)" id="bras" class="catImg">
@@ -46,6 +46,8 @@
               <img src="../assets/pieds.jpg" @click="catF($event)" id="pied" class="catImg">
             </figure>
           </div>
+        </div>
+
 
 
           <a @click.prevent="send($event)" class="btn">
@@ -181,7 +183,7 @@
 
                 });
               },
-              'image/jpeg'
+              'image/jpeg' , 0.4
             );
           }
 
@@ -345,9 +347,14 @@
 
 <style scoped>
 
-
-  .icon_container {
+  .container-out{
     width: 100%;
+    height: 120px;
+    overflow: scroll;
+    clear: both;
+  }
+  .icon_container {
+    width: 1110px;
     height: 100px;
     display: inline-table;
     overflow: scroll;
@@ -355,9 +362,10 @@
 
   .icon_container figure {
 
-    width: 30%;
+    width: 90px;
     display: inline-block;
     margin: 10px 0;
+    float: left;
 
   }
 
@@ -388,7 +396,7 @@
     width: 95%;
     background-color: white;
     margin: 0 auto;
-    padding-bottom: 20px;
+    padding-bottom: 70px;
     border-radius: 10px;
     margin-top: 10vh;
     -webkit-box-shadow: 0px 0px 6px 1px rgba(87, 87, 87, 1);

@@ -11,7 +11,8 @@
           <div class="containerCard"  v-for="elem in myPhoto" v-bind:class="[elem.pushId]" >
 
             <div class="photo-card"  >
-              <div class="image" v-bind:class="[elem.pushId]" :style="{ 'background-image': 'url(' + elem.url + ')' }" >
+              <div class="image" v-bind:class="[elem.pushId]"  ><!--:style="{ 'background-image': 'url(' + elem.url + ')' }"-->
+              <img :src="elem.url" v-bind:class="[elem.pushId]">
                 <span class="del hide" @click="removePhoto($event)">X</span>
               </div>
               <div class="heading">
@@ -148,6 +149,16 @@
 </script>
 
 <style scoped>
+  img{
+    width: 100%;
+    border-radius:10px;
+    object-fit: cover;
+    height: 20vh;
+  }
+  img[lazy=loading] {
+    width: 40px;
+  }
+
   .show{display: block}
   .hide{display: none}
   .del{    width: 25px;
@@ -344,10 +355,7 @@ footer input{
 }
    .image {
       border-radius: 2px 2px 0 0;
-      height:0px;
      width:100%;
-     padding-bottom:56.25%;
-     background : center center / cover;
       display:block;
     }
 

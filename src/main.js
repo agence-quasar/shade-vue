@@ -5,6 +5,8 @@ import Tabs from 'vue-tabs-component';
 import 'vue2-toast/lib/toast.css';
 import Toast from 'vue2-toast';
 import infiniteScroll from 'vue-infinite-scroll'
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
 
 
 
@@ -20,6 +22,7 @@ Vue.use(VueTouch);
 Vue.use(Tabs);
 Vue.use(Toast);
 Vue.use(infiniteScroll);
+Vue.use(MintUI);
 
 
 

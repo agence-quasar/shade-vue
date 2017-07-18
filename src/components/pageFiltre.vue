@@ -34,6 +34,7 @@
 
         list : false,
         categoryActive : false,
+        elems :[]
 
 
 
@@ -72,17 +73,42 @@
           vm.flowPage();
 
 
-        }
+        },
+      btnUpdate : function () {
+      /*  let vm = this;
+        let categoryActive = vm.$parent.userTab.categoryActive;
+        console.log(categoryActive);
+        let coucou = [];
+
+        let dataB = Object.keys(categoryActive).map(function (e) {
+          return [Number(e), categoryActive[e]];
+        });
+
+        dataB.map(function (categoryActive) {
+          coucou.push(categoryActive[1])
+        });
+        console.log(coucou);
+        let btn = document.getElementsByClassName('btn');
+        console.log(btn);
+        console.log(document.getElementsByClassName('btn')[0]);
+        for (let i=0;i<coucou.length;i++){
+            //console.log(ge);
+
+
+        }*/
+      },
+      test:function () {
+            console.log('coucou');
+
+      }
+
+
+
     },
 
     created : function () {
-        let vm = this;
-        vm.list = vm.$parent.categoryList;
-        let categoryActive = vm.$parent.userTab.categoryActive;
-        if(categoryActive){
-          let listActive = Object.values(categoryActive);
-          console.log(listActive);
-        }
+
+
 
 
 
@@ -90,24 +116,27 @@
 
     },
     mounted : function () {
+        console.log('mounted filtre');
 
       let vm = this;
       vm.list = vm.$parent.categoryList;
+      console.log('vm.list', vm.list);
       let categoryActive = vm.$parent.userTab.categoryActive;
       if(categoryActive){
         let listActive = Object.values(categoryActive);
-        console.log(listActive);
-        for(let i=0; i<listActive.length;i++){
-          console.log(listActive[i]);
-          let get = document.getElementsByClassName(listActive[i]);
-          console.log(get[0])
-          get[0].classList.toggle('btn_active');
-          get[0].classList.toggle('btn');
-        }
+        //console.log(listActive);
       }
+      vm.categoryActive = categoryActive;
 
 
 
+
+
+
+    },
+    ready:function () {
+
+        console.log('coucou',document.getElementsByClassName('btn'));
     }
   }
 
