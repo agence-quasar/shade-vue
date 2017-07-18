@@ -82,10 +82,13 @@
             removePhoto(event){
                 //console.log(event.target.parentElement);
                 let container = event.target.parentElement;
+                console.log(container.parentElement);
                 let str = container.getAttribute("class");
                 let res = str.split(" ");
                 console.log(res);
                 firebase.database().ref('photos/' + res[1] ).remove()
+
+              container.parentElement.style.display="none";
 
 
             },

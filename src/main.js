@@ -1,9 +1,6 @@
 
 import Vue from 'vue'
 import App from './App'
-import Tabs from 'vue-tabs-component';
-import 'vue2-toast/lib/toast.css';
-import Toast from 'vue2-toast';
 import infiniteScroll from 'vue-infinite-scroll'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
@@ -19,8 +16,6 @@ VueTouch.registerCustomEvent('doubletap', {
   taps: 2
 });
 Vue.use(VueTouch);
-Vue.use(Tabs);
-Vue.use(Toast);
 Vue.use(infiniteScroll);
 Vue.use(MintUI);
 
@@ -44,7 +39,7 @@ let AppVue = new Vue({
   components: {App},
 
 
-  mounted: function () {
+  created: function () {
 
     const firebaseConfig = {
       apiKey: "AIzaSyA3UdBrIvHxcTEaGGEFI6obqi17JjT6S9Q",
@@ -65,4 +60,4 @@ let AppVue = new Vue({
   }
 
 
-})
+});

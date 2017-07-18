@@ -34,7 +34,6 @@
 
         list : false,
         categoryActive : false,
-        elems :[]
 
 
 
@@ -43,72 +42,47 @@
     },
 
     methods: {
-        flowPage : function () {
-          this.$parent.flowPage = true;
-          this.$parent.pageFiltre = false;
-        },
+      flowPage : function () {
+        this.$parent.flowPage = true;
+        this.$parent.pageFiltre = false;
+      },
 
-        add : function (event) {
+      add : function (event) {
 
         let get = event.target;
         get.classList.toggle('btn_active');
         get.classList.toggle('btn');
 
-        },
-        valider : function (event) {
-            let vm = this;
-            let get = document.getElementsByClassName('btn_active');
-            //let old = this.$parent.userTab.categoryActive;
-            let newold = {};
-            for(let i=0;i<get.length;i++){
-                let elem = get[i].innerHTML;
-                console.log(elem);
-                newold[elem] = elem;
-
-            }
-
-          let updates = {};
-          updates['users/' + vm.$parent.user.uid + '/categoryActive'] = newold;
-          firebase.database().ref().update(updates);
-          vm.flowPage();
-
-
-        },
-      btnUpdate : function () {
-      /*  let vm = this;
-        let categoryActive = vm.$parent.userTab.categoryActive;
-        console.log(categoryActive);
-        let coucou = [];
-
-        let dataB = Object.keys(categoryActive).map(function (e) {
-          return [Number(e), categoryActive[e]];
-        });
-
-        dataB.map(function (categoryActive) {
-          coucou.push(categoryActive[1])
-        });
-        console.log(coucou);
-        let btn = document.getElementsByClassName('btn');
-        console.log(btn);
-        console.log(document.getElementsByClassName('btn')[0]);
-        for (let i=0;i<coucou.length;i++){
-            //console.log(ge);
-
-
-        }*/
       },
-      test:function () {
-            console.log('coucou');
+      valider : function (event) {
+        let vm = this;
+        let get = document.getElementsByClassName('btn_active');
+        //let old = this.$parent.userTab.categoryActive;
+        let newold = {};
+        for(let i=0;i<get.length;i++){
+          let elem = get[i].innerHTML;
+          console.log(elem);
+          newold[elem] = elem;
+
+        }
+
+        let updates = {};
+        updates['users/' + vm.$parent.user.uid + '/categoryActive'] = newold;
+        firebase.database().ref().update(updates);
+        vm.flowPage();
+
 
       }
-
-
-
     },
 
     created : function () {
-
-
+      let vm = this;
+      vm.list = vm.$parent.categoryList;
+      let categoryActive = vm.$parent.userTab.categoryActive;
+      if(categoryActive){
+        let listActive = Object.values(categoryActive);
+        console.log(listActive);
+      }
 
 
 
@@ -116,27 +90,24 @@
 
     },
     mounted : function () {
-        console.log('mounted filtre');
 
       let vm = this;
       vm.list = vm.$parent.categoryList;
-      console.log('vm.list', vm.list);
       let categoryActive = vm.$parent.userTab.categoryActive;
       if(categoryActive){
         let listActive = Object.values(categoryActive);
-        //console.log(listActive);
+        console.log(listActive);
+        for(let i=0; i<listActive.length;i++){
+          console.log(listActive[i]);
+          let get = document.getElementsByClassName(listActive[i]);
+          console.log(get[0])
+          get[0].classList.toggle('btn_active');
+          get[0].classList.toggle('btn');
+        }
       }
-      vm.categoryActive = categoryActive;
 
 
 
-
-
-
-    },
-    ready:function () {
-
-        console.log('coucou',document.getElementsByClassName('btn'));
     }
   }
 
@@ -148,7 +119,8 @@
   .container{
     width: 100%;
     margin: 0 auto;
-    margin-top: 20vh;
+    margin-top: 15vh;
+    padding-bottom: 30px;
 
 
 

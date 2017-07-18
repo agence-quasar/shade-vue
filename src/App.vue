@@ -3,13 +3,28 @@
 
 
 
-      <page-profil v-if="profilPage"></page-profil>
-      <page-flow v-if="flowPage"></page-flow>
-      <page-upload v-if="pageUpload"></page-upload>
-      <page-filtre v-if="pageFiltre"></page-filtre>
-      <page-connect v-if="!isConnect"></page-connect>
 
-    <footer-menu v-show="isConnect"></footer-menu>
+
+      <transition
+        name="custom-classes-transition"
+        leave-active-class="animated fadeOutLeft"
+        mode="out-in"
+
+      >
+        <page-flow key ="1" v-if="flowPage"  ></page-flow>
+
+        <page-filtre key="2" v-if="pageFiltre"  ></page-filtre>
+
+        <page-upload key="3" v-if="pageUpload"></page-upload>
+
+        <page-connect key="4" v-if="!isConnect"></page-connect>
+
+        <page-profil key="5" v-if="profilPage"></page-profil>
+      </transition>
+
+
+
+    <footer-menu v-if="isConnect"></footer-menu>
 
 
 
@@ -66,12 +81,49 @@ export default {
     console.log('change', this.$children[0])
     this.$children[0].profil = this.profilPage
 
+  },
+  mounted: function () {
+
+    let vm = this;
+
+    let ref = firebase.database().ref('users/' + vm.user.uid );
+    ref.on('value', function(snapshot) {
+      let data = snapshot.val();
+      vm.userTab =
+        data;
+    });
   }
 }
 </script>
 
 <style>
 
+  .fade-enter-active,
+  .fade-leave-active {
+    -webkit-transition: all ease 0.6s;
+    -moz-transition: all ease 0.6s ;
+    -ms-transition: all ease 0.6s ;
+    -o-transition: all ease 0.6s ;
+    transition: all ease 0.6s ;
+    opacity: 1;
+  }
+
+  .fade-enter,
+  .fade-leave-to
+    /* .fade-leave-active in <2.1.8 */
+
+  {
+    opacity: 0
+  }
+*{
+    transition: all ease 0.5s !important;
+  -webkit-animation-duration: 0.5!important;
+  -moz-animation-duration: 0.5s!important;
+  -ms-transition-animation-duration: 0.5s!important;
+  -vendor-animation-duration: 0.5s!important;
+  -vendor-animation-delay: 0.5s !important;
+  -vendor-animation-iteration-count: infinite !important;
+  }
 
   .spinner {
     margin: 100px auto;

@@ -5,14 +5,11 @@
       <div class="dot1"></div>
       <div class="dot2"></div>
     </div>-->
-    <h1 v-if="empty">aucune photo ici, Postez en une !</h1>
+    <h1 v-if="empty" style="margin-top: 30vh">aucune dans la category {{emptyCat}}, Soyez le premier !</h1>
 
 
 
-   <div    v-infinite-scroll="loadMore"
-            infinite-scroll-disabled="busy"
-            infinite-scroll-distance="0"
-    >
+   <div>
       <ul>
         <li v-for="elem in picturesUrl">
           <v-touch tag="div"
@@ -46,6 +43,8 @@
 
   import footerMenu from './menu'
   import { Lazyload } from 'mint-ui';
+  import { Toast } from 'mint-ui';
+
   let count = 0;
   export default {
     name: 'pageFlow',
@@ -61,7 +60,7 @@
         empty: false,
         busy: true,
         lastEntry: 0,
-        loading: true
+        emptyCat : false
 
 
       }
@@ -70,141 +69,23 @@
 
 
     methods: {
-      /*loadMore: function () {
-        let vm = this;
-        vm.busy = true;
-        console.log('plop new call' );
-
-        setTimeout(function () {
-
-          let categoryActive = vm.userTab.categoryActive;
-
-          function shuffle(a) {
-            for (let i = a.length; i; i--) {
-              let j = Math.floor(Math.random() * i);
-              [a[i - 1], a[j]] = [a[j], a[i - 1]];
-            }
-          }
-
-          if (!categoryActive) {
-            console.log('category active = ', vm.userTab.categoryActive);
-            vm.loading=true;
-
-
-            let photoRef = firebase.database().ref('photos/');
-            if (vm.lastEntry){
-              console.log('YLO');
-              photoRef.orderByKey().startAt(vm.lastEntry).limitToFirst(4).once('value').then(function (snapshot) {
-                let data = snapshot.val();
-                let coucou=[];
-                if (data) {
-                  let dataB = Object.keys(data).map(function (key, index) {
-                    console.log(key, index);
-                    if((index+1)%4 == 0){
-                      console.log("last");
-                      vm.lastEntry = key;
-                    }
-                    return [Number(key), data[key]];
-                  });
-                  dataB.map(function (obj) {
-                    coucou.push(obj[1])
-                  });
-                  //shuffle(coucou);
-                  coucou.splice(0,1);
-                  vm.picturesUrl = vm.picturesUrl.concat(coucou);
-                  console.log('concat batard');
-                }
-
-                vm.busy =false;
-              });
-            }
-            else{
-              console.log('first call');
-              photoRef.orderByKey().limitToFirst(3).once('value').then(function (snapshot) {
-
-
-                let data = snapshot.val();
-                let coucou=[];
-                if (data) {
-                  let dataB = Object.keys(data).map(function (key, index) {
-                    console.log(key, index);
-                    if((index+1)%3 == 0){
-                      console.log("last");
-                      vm.lastEntry = key;
-                    }
-                    return [Number(key), data[key]];
-                  });
-                  dataB.map(function (obj) {
-                    coucou.push(obj[1])
-                  });
-                  //shuffle(coucou);
-                  vm.picturesUrl = coucou;
-                  console.log('batard');
-                }
-
-                vm.busy =false;
-
-              });
-            }
-
-
-          }else{
-            // cree un tableau avec tout les categories dans l'objet categoryActive
-            let listActive = Object.values(categoryActive);
-            console.log(listActive);
-
-            for (let i=0;i<listActive.length;i++){
-              console.log(listActive[i]);
-              // boucle mes categorie ou aller chercher les photo equalto chaque categories actives
-              let photoRef = firebase.database().ref('photos/');
-              photoRef.orderByChild("category").equalTo(listActive[i]).on('value', function(snapshot) {
-
-                let data = snapshot.val();
-                let coucou = [];
-                if (data) {
-                  let dataB = Object.keys(data).map(function (e) {
-                    return [Number(e), data[e]];
-                  });
-                  dataB.map(function (obj) {
-                    coucou.push(obj[1])
-                  });
-
-                  vm.stateUrl.push(coucou);
-
-
-
-
-
-                }
-
-              });
-              let newstate = Object.keys(vm.stateUrl).reduce(function(res, v) {
-                return res.concat(vm.stateUrl[v]);
-              }, []);
-              vm.picturesUrl = newstate;
-
-
-
-
-              //shuffle(vm.picturesUrl);
-
-            }
-
-
-          } // end else
-
-          console.log('end... ' + new Date());
-          vm.busy = false;
-          vm.loading=false;
-        }, 1000)
-
-      },*/
 
       toast: function () {
-        this.$toast.top('like');  // or this.$toast.bottom('bottom');
+        Toast({
+          message: 'like !',
+          iconClass: 'mintui mintui-success',
+          duration:700
+        });
+      },
+      openToastWithIcon:function () {
+
       },
       untoast: function () {
-        this.$toast.top('unlike');  // or this.$toast.bottom('bottom');
+        Toast({
+          message: 'unLike !',
+          iconClass: 'mintui mintui-success',
+          duration:700
+        });
       },
 
       like: function (event) {
@@ -443,10 +324,14 @@
 
               vm.stateUrl.push(coucou);
 
+              vm.empty=false;
 
 
 
-
+            }else{
+              vm.empty = true;
+              console.log('elsemsg',listActive[i]);
+              vm.emptyCat = listActive[i];
             }
 
           });
@@ -466,6 +351,7 @@
 
       }
       shuffle(vm.picturesUrl)
+
     }
     }
 
