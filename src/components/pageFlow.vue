@@ -366,8 +366,11 @@
     object-fit: cover;
     height: 60vh;
   }
+
   img[lazy=loading] {
     width: 40px;
+
+
   }
 
   main{
