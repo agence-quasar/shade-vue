@@ -5,34 +5,32 @@
 
     <main>
       <div class="container">
-        <a class="icon-arrow-left2 arrow" @click="flowPage"></a>
-        <h1>{{user.displayName}}</h1>
+        <a class="icon-retour arrow" @click="flowPage"></a>
+        <h4>profil : {{user.displayName}}</h4>
         <div class="cardGlobal">
-
           <div class="containerCard"  v-for="elem in myPhoto" v-bind:class="[elem.pushId]" >
+
             <div class="photo-card"  >
-              <div class="image"  :style="{ 'background-image': 'url(' + elem.url + ')' }" >
+              <div class="image" v-bind:class="[elem.pushId]"  ><!--:style="{ 'background-image': 'url(' + elem.url + ')' }"-->
+              <img :src="elem.url" v-bind:class="[elem.pushId]">
+                <span class="del hide" @click="removePhoto($event)">X</span>
               </div>
               <div class="heading">
-                <h2 class="title">like : {{elem.like}}</h2>
+                <h2 class="title"> {{elem.like}} <span class="icon-like"></span></h2>
                 <a class="icon-x close" v-bind:class="[elem.pushId]" @click="removePhoto($event)"></a>
-
               </div>
             </div>
           </div>
         </div>
+
+
+
       </div>
-      <footer>
-        <nav>
-          <ul>
-            <li id="profil" class="icon-photo">
-              <input  class="input-file "  type="file" @change="onFileChange">
-            </li>
-            <li id="photo_icon">
-            </li>
-          </ul>
-        </nav>
-      </footer>
+
+<!--
+      <footer-menu></footer-menu>
+-->
+
     </main>
 
 
@@ -48,8 +46,9 @@
 
 <script>
   import Vue from 'vue'
-import footerMenu from './menu'
-export default {
+  import footerMenu from './menu'
+
+  export default {
   name: 'pageProfil',
   components:{footerMenu},
   data : function () {
@@ -62,23 +61,34 @@ export default {
         msg : {a :false, b:"Postez une photo"},
         myPhoto:false,
         classId:false,
-        active:true
+        active:true,
       }
 
   },
 
   methods:{
-            test(event){
-              console.log(event);
+            edit(event){
+                let croix = document.getElementsByClassName('del');
+                for ( let i = 0 ; i < croix.length; i++){
+                    croix[i].classList.toggle('show');
+                    croix[i].classList.toggle('hide');
 
+                }
+                let edit = event.target;
+                console.log(edit);
+                edit.classList.toggle("icon-validation");
+                edit.classList.toggle("icon-edit")
             },
-            removePhoto(){
-                console.log(event.currentTarget);
-                let container = event.currentTarget.parentElement.parentElement;
-                let str = event.currentTarget.getAttribute("class");
+            removePhoto(event){
+                //console.log(event.target.parentElement);
+                let container = event.target.parentElement;
+                console.log(container.parentElement);
+                let str = container.getAttribute("class");
                 let res = str.split(" ");
-                //console.log(res)
-                firebase.database().ref('photos/' + res[2] ).remove()
+                console.log(res);
+                firebase.database().ref('photos/' + res[1] ).remove()
+
+              container.parentElement.style.display="none";
 
 
             },
@@ -88,159 +98,50 @@ export default {
             },
 
             onFileChange(e) {
-              let files = e.target.files || e.dataTransfer.files; // chope l'image
-              if (!files.length)
-                return;
-              this.createImage(files[0]);
-            },
-            createImage(file) {
-              let image = new Image();
-              let reader = new FileReader();
               let vm = this;
-              console.log(file);
-
-
-
-              reader.onload = (e) => {
-                vm.imageUrl = e.target.result;
-
-
-              };
-              //reader.readAsDataURL(file); // assigne l'url de l'image a data.imageUrl
-              vm.image =file;  //assigne l'objet image a data.image
-
-              //console.log(file); //
-              this.uploadImage();
-            },
-            removeImage: function (e) {
-              this.image = '';
-            },
-            uploadImage(){
-              let vm = this;
-              let image = vm.image;
-              let file = image; // use the Blob or File API
-              console.log(file.lastModified);
-
-              let ref = firebase.storage().ref(JSON.stringify(file.lastModified));
-              // push dans ce dossier un enfant qui a le nom " image.name "
-
-              ref.put(file).then(function(snapshot) {
-                console.log('Uploaded a blob or file!');
-              }).then(function () {
-
-                let ref = firebase.storage().ref(JSON.stringify(file.lastModified));
-                let storeUrl;
-
-                let getUrl = function () {
-
-
-                  ref.getDownloadURL().then(function(url) {
-                    let xhr = new XMLHttpRequest();
-                    xhr.responseType = 'blob';
-                    xhr.onload = function(event) {
-                      let blob = xhr.response;
-                    };
-                    xhr.open('GET', url);
-                    xhr.send();
-                    storeUrl = url;
-
-                    postUrl(storeUrl);
-
-
-                  }).catch(function(error) {
-                    console.log(error)
-                  });
 
 
 
 
-                };
-                getUrl();
-                // post l'url de l'image dans un tableau photos dans la table user.uid
-                let postUrl = function () {
-                  /*let photoId = 1;
-                  firebase.database().ref('photos/').once('value').then(function (snapshot) {
-                    if (snapshot.val()) {
+              loadImage(
+                e.target.files[0],
+                function () {
 
-                      let data = snapshot.val();
-                      data = data.length;
-                      photoId = data++;
-                      return photoId
-                    }
-
-                  }).then(function () {*/
-                    let plop = {a: "plop", b: "plop2", c: "plop3"}; // valeur test pour db
-                    let category = {a: "random"}; // valeur test pour la db
+                    let file = e.target.files[0];
+                    vm.$parent.blob = file;
+                    console.log(file);
+                    vm.$parent.pageUpload = true;
+                    vm.$parent.profilPage = false;
+                },
+                {canvas : true} // Options
+              );
 
 
-                    let newRef = firebase.database().ref('photos/' ).push({
-
-                      url: storeUrl,
-                      wtacherId: plop,
-                      category: category,
-                      userId: vm.user.uid,
-                      like: 0,
-                      pushId : 0
-
-
-                    });
-                  let pushId = newRef.key;
-                  let niquePush ={};
-                  niquePush['photos/'+ pushId + '/pushId'] = pushId;
-                  firebase.database().ref().update(niquePush);
-
-
-
-                  let updates = {};
-                    updates['users/' + vm.user.uid + '/isPhoto'] = true;
-                    firebase.database().ref().update(updates);
-
-                    vm.removeImage();
-                    vm.isPhoto = true;
-                    console.log(vm.msg);
-                    vm.msg.a = "Photo bien recu";
-                    vm.msg.b = "Poster d'autre photos"
-
-
-                  //});
-                }
-
-              });
-      }
+            }
     },
   created:function () {
     let vm = this;
-    firebase.database().ref('users/' + vm.user.uid).on('value', function (snapshot) {
 
-      vm.isPhoto = true;
-      let ref = firebase.database().ref("photos/");
-      ref.orderByChild("userId").equalTo(vm.user.uid).on('value', function(snapshot) {
-
-        let data = snapshot.val();
-        let myPhoto = [];
-
-        if(data){
-          let dataB = Object.keys(data).map(function(e) {
-            return [Number(e), data[e]];
-          });
-          dataB.map( function(obj){
-              myPhoto.push(obj[1]);
-
-          });
-
-          vm.myPhoto = myPhoto;
-          console.log(vm.myPhoto)
+    let that = this;
+    let photoRef = firebase.database().ref('photos/');
+    photoRef.orderByChild("userId").equalTo(vm.user.uid).on('value', function(snapshot) {
 
 
-        }
+      let data = snapshot.val();
+
+      let coucou = [];
+
+      if(data){
+        let dataB = Object.keys(data).map(function(e) {
+          return [Number(e), data[e]];
+        });
+        dataB.map( function(obj){  coucou.push(obj[1]) });
+        that.myPhoto = coucou;
+      }
 
 
-
-      });
 
     });
-
-
 
 
   }
@@ -251,19 +152,50 @@ export default {
 </script>
 
 <style scoped>
+  img{
+    width: 100%;
+    border-radius:10px;
+    object-fit: cover;
+    height: 20vh;
+  }
+  img[lazy=loading] {
+    width: 40px;
+  }
+
+  .show{display: block}
+  .hide{display: none}
+  .del{    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: -2px;
+    font-size: 16px;
+    line-height: 25px;
+    right: -2px;
+    border-radius: 50%;
+    background-color: #e6184a;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;}
+.icon-like{
+  position: absolute;
+  top: -1px;
+  font-size: 22px;
+}
 label{
   border:1px solid black;
 }
 main{
   background-image: url("../assets/background-profil.jpg");
+  background-attachment: fixed;
   background-size: 100%;
   overflow: auto;
   width: 100%;
   background-repeat:no-repeat;
   position: relative
 }
-h1{
+h4{
   clear: both;
+  margin-top: 60px;
 
 }
 .arrow{
@@ -273,17 +205,27 @@ h1{
   float: left;
   margin: 20px;
 }
+.arrow-r{
+  font-size: 30px;
+  /* position: absolute; */
+  display: block;
+  float: right;
+  margin: 20px;
+}
 .container{
-  width: 85%;
+  width: 95%;
   background-color: white;
   margin: 0 auto;
+  padding-bottom: 20px;
+  margin-bottom:70px;
   border-radius: 10px;
   margin-top: 10vh;
-  -webkit-box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
-  -moz-box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
-  box-shadow: 0px 0px 25px 0px rgba(0,0,0,1);
+  -webkit-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  -moz-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  overflow: inherit;
   text-align: center;
-  min-height: 100vh;
+  min-height: 80vh;
 display:inline-block;
 
 }
@@ -291,6 +233,7 @@ nav{
   display: block;
   width: 100%;
   height: 30px;
+  border-top:2px solid #3c1042;
 }
 
 ul{
@@ -320,6 +263,7 @@ input[type="file"]:focus {
   width: calc(50% - 10px);
   float: left;
   padding: 5px;
+  position: relative;
 }
 
 /*
@@ -341,7 +285,6 @@ footer ul{
 footer nav{
   height:40px;
   background-color: white;
-  border-top:2px solid black;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -368,6 +311,9 @@ footer #profil{
   cursor: pointer;
   color: white;
 
+  -webkit-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  -moz-box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
+  box-shadow: 0px 0px 6px 1px rgba(87,87,87,1);
 }
 
 footer input{
@@ -376,7 +322,7 @@ footer input{
   height: 50px;
   opacity: 0;
 }
-.icon-photo:before {
+.icon-camera:before {
   position: absolute;
   bottom: 17px;
   left: 0px;
@@ -384,6 +330,7 @@ footer input{
   text-align: center;
   color: white;
   font-size: 40px;
+  font-weight: 100;
 }
 #photo_icon{
   position: absolute;
@@ -411,10 +358,7 @@ footer input{
 }
    .image {
       border-radius: 2px 2px 0 0;
-      height:0px;
      width:100%;
-     padding-bottom:106.25%;
-     background : center center / cover;
       display:block;
     }
 

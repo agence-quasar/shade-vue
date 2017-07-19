@@ -1,5 +1,8 @@
 # shade app
 owner : agencequasar@gmail.com
+owner : shadeapp.io
+testPage : https://shade-dev.firebaseapp.com/
+devs : github/bibish
 
 > A Vue.js project
 
@@ -10,10 +13,29 @@ owner : agencequasar@gmail.com
 npm install
 
 #install vue tap
-npm install vue-gesture
 
+<<<<<<< HEAD
 npm install --save vue-touch
 
+=======
+npm install vue-touch@next
+
+
+#install vue tabs
+npm install vue-tabs-component --save
+
+#install toast
+npm install vue2-toast -S
+
+
+
+
+
+thanks to :
+https://github.com/spatie/vue-tabs-component
+https://github.com/vuejs/vue-touch
+https://github.com/lin-xin/vue-toast
+>>>>>>> c5ac8d20c086c81b6d7b08c2dcc7537d62f07948
 
 # serve with hot reload at localhost:8080
 npm run dev
