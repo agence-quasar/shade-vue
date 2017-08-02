@@ -10,10 +10,10 @@ owner : agencequasar@gmail.com
 npm install
 
 #install vue tap
-npm install vue-gesture
-
 npm install --save vue-touch
 
+# mint UI 
+npm install mint-ui -S
 
 # serve with hot reload at localhost:8080
 npm run dev
