@@ -1,4 +1,5 @@
 # shade app
+app : https://shadeapp.io/app
 owner : agencequasar@gmail.com
 
 > A Vue.js project
