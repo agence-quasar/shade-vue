@@ -1,5 +1,5 @@
 # shade app
-app : https://shadeapp.io/app
+app : https://local-dev-amb.firebaseapp.com/
 owner : agencequasar@gmail.com
 
 > A Vue.js project
