@@ -11,7 +11,7 @@ owner : agencequasar@gmail.com
 npm install
 
 #install vue tap
-npm install --save vue-touch
+npm install --save vue-touch@next
 
 # mint UI 
 npm install mint-ui -S
