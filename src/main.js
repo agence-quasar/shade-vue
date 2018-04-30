@@ -1,6 +1,11 @@
 
 import Vue from 'vue'
 import App from './App'
+import infiniteScroll from 'vue-infinite-scroll'
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
+
+
 
 
 Vue.config.productionTip = false;
@@ -11,11 +16,16 @@ VueTouch.registerCustomEvent('doubletap', {
   taps: 2
 });
 Vue.use(VueTouch);
+Vue.use(infiniteScroll);
+Vue.use(MintUI);
+
+
+
 
 
 
 /* eslint-disable no-new */
-new Vue({
+let AppVue = new Vue({
   el: '#app',
   template: '<App/>',
   data: {
@@ -29,7 +39,7 @@ new Vue({
   components: {App},
 
 
-  mounted: function () {
+  created: function () {
 
     const firebaseConfig = {
       apiKey: "AIzaSyA3UdBrIvHxcTEaGGEFI6obqi17JjT6S9Q",
@@ -50,4 +60,4 @@ new Vue({
   }
 
 
-})
+});
